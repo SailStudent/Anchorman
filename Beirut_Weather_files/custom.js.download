@@ -1,0 +1,195 @@
+// Jquery with no conflict
+jQuery(document).ready(function($) {
+
+//Hides elements by class based on enclave
+    if (location.hostname.match(".af.mil")) {
+        $('.notNIPR').css({'display': 'none'});
+    }
+
+    if (location.hostname.match(".af.smil.mil")) {
+        $('.notSIPR').css({'display': 'none'});
+    }
+
+    if (location.hostname.match(".ic.gov")) {
+        $('.notSCI').css({'display': 'none'});
+    }
+
+//Hides the header and menu when the user is in a frame. Fix for metcon pages
+    if (self != top) {
+        if (document.getElementById("header")) {
+            document.getElementById("header").style.display = 'none';
+        }
+        if (document.getElementById("menu")) {
+            document.getElementById("menu").style.display = 'none';
+        }
+        if (document.getElementById("bottom")) {
+            document.getElementById("bottom").style.display = 'none';
+        }
+    }
+
+    if ($.browser.msie && parseInt($.browser.version, 10) == 7) {
+        var zIndexNumber = 1000;
+        // Put your target element(s) in the selector below!
+        $("div").each(function() {
+            $(this).css('zIndex', zIndexNumber);
+            zIndexNumber -= 10;
+        });
+    }
+
+    $("#rte-button-preview").click(function() {
+        setTimeout(updatePreviewStyling, 3000);
+    });
+
+    $("#editor-precursor").css("display", "block");
+
+    // Superfish menu! ------------------------------------------------------ //
+    $("ul.sf-menu").supersubs({
+        extraWidth: 1
+    }).superfish({
+        animation: {height: 'show'},   // slide-down effect without fade-in
+        delay: 800,              // 1.2 second delay on mouseout
+        drowShadows: false
+        // autoArrows: false,
+    });
+
+    //$("ul.sf-menu").superfish({
+    //    animation: {height:'show'},   // slide-down effect without fade-in
+    //    delay:     800 ,              // 1.2 second delay on mouseout
+    //    drowShadows: false
+    //});
+
+    // Scroll to top ------------------------------------------------------ //
+
+    $('#to-top').click(function() {
+        $.scrollTo({top: '0px', left: '0px'}, 300);
+    });
+
+    // Submenu rollover --------------------------------------------- //
+
+    $("ul.sf-menu>li>ul li").hover(function() {
+        // on rollover
+        $(this).children('a').children('span').stop().animate({
+            marginLeft: "3"
+        }, "fast");
+    }, function() {
+        // on out
+        $(this).children('a').children('span').stop().animate({
+            marginLeft: "0"
+        }, "fast");
+    });
+
+    // tabs ------------------------------------------------------ //
+
+    $("ul.tabs").tabs("div.panes > div", {effect: 'fade'});
+
+    // Thumbs rollover --------------------------------------------- //
+
+    $('.thumbs-rollover li a img').hover(function() {
+        // on rollover
+        $(this).stop().animate({
+            opacity: "0.5"
+        }, "fast");
+    }, function() {
+        // on out
+        $(this).stop().animate({
+            opacity: "1"
+        }, "fast");
+    });
+
+    // Blog posts rollover --------------------------------------------- //
+
+    $('#posts .post').hover(function() {
+        // on rollover
+        $(this).children('.thumb-shadow').children('.post-thumbnail').children(".cover").stop().animate({
+            left: "312"
+        }, "fast");
+    }, function() {
+        // on out
+        $(this).children('.thumb-shadow').children('.post-thumbnail').children(".cover").stop().animate({
+            left: "0"
+        }, "fast");
+    });
+
+    // Portfolio projects rollover --------------------------------------------- //
+
+    $('#projects-list .project').hover(function() {
+        // on rollover
+        $(this).children('.project-shadow').children('.project-thumbnail').children(".cover").stop().animate({
+            top: "133"
+        }, "fast");
+    }, function() {
+        // on out
+        $(this).children('.project-shadow').children('.project-thumbnail').children(".cover").stop().animate({
+            top: "0"
+        }, "fast");
+    });
+
+    // Sidebar rollover --------------------------------------------------- //
+
+    $('#sidebar>li>ul>li').hover(function() {
+        // over
+        $(this).children('a').stop().animate({marginLeft: "5"}, "fast");
+    }, function() {
+        // out
+        $(this).children('a').stop().animate({marginLeft: "0"}, "fast");
+    });
+
+    // Footer menu rollover --------------------------------------------------- //
+
+    $('#footer .col .page_item').hover(function() {
+        // over
+        $(this).children('a').stop().animate({marginLeft: "5"}, "fast");
+    }, function() {
+        // out
+        $(this).children('a').stop().animate({marginLeft: "0"}, "fast");
+    });
+
+    $('#nav').hide().css('visibility', 'visible');
+    $('#header > .wrapper, #nav, #bottom > .wrapper').fadeIn();
+//close
+});
+
+// search clearance
+function defaultInput(target) {
+    if ((target).value == 'Search City, Zip, ICAO or WMO') {
+        (target).value = '';
+    }
+}
+
+function clearInput(target) {
+    if ((target).value == '') {
+        (target).value = 'Search City, Zip, ICAO or WMO';
+    }
+}
+
+function updatePreviewStyling() {
+    console.log("done previewing");
+    var cssLink = document.createElement("link");
+    cssLink.href = "/AFW_WEBS/NavigationHeader/AFWWEBSLITE/style.css";
+    cssLink.rel = "stylesheet";
+    cssLink.type = "text/css";
+    frames[1].document.body.appendChild(cssLink);
+
+}
+
+// -------- Custom Page Functions ------- //
+
+var includeDirectoryListing = function(includeUrl, outputDivId) {
+    jQuery.ajax({
+        url: includeUrl
+    }).done(function(data) {
+        var outputDiv = jQuery('#' + outputDivId);
+        outputDiv.html(data);
+        outputDiv.find("h1").remove();
+        outputDiv.find("a").first().remove();
+        outputDiv.find("a").each(function() {
+            jQuery(this).attr('target', '_blank');
+            var currentHref = jQuery(this).attr('href');
+            jQuery(this).attr('href', includeUrl + '/' + currentHref);
+        });
+    });
+};
+
+
+
+

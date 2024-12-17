@@ -1,0 +1,9 @@
+ephem
+pandas
+pillow
+python-pptx
+requests_pkcs12
+staticmap
+streamlit
+bs4
+markdown

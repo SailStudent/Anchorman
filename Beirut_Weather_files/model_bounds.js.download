@@ -1,0 +1,11 @@
+define([
+], function() {
+    return {
+        "European Rain Rate" : {
+            "x-min" : -12.5,
+            "y-min" : 34.5,
+            "x-max" : 32.9,
+            "y-max" : 69.9
+        }
+    };
+});

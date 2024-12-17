@@ -1,0 +1,241 @@
+var debugging = false;
+var useUserRoles = false;
+var getEnclaveUrl = '/AFW_WEBS/XML/enclave.php';
+var user_role_prefs_loaded = false;
+var praeferentiaUserRoleURL = '/praeferentia/users/';
+var operationalJSONPath = '/AFW_WEBS/JSON/operational.json';
+var userID, pref_url, testURL;
+var user_role_selection_index = 0;
+
+if(debugging) {
+    testURL = 'https://testweather.af.mil';
+    praeferentiaUserRoleURL = testURL + '/praeferentia/users/';
+    operationalJSONPath = testURL + '/AFW_WEBS/JSON/operational.json';
+}
+
+var operational_user_role = {
+    "json_path": operationalJSONPath
+    , "layers": null
+    , "navigation": null
+    , "json": null
+};
+
+var user_role_prefs = {
+    pref: {
+        userRole: "forecaster"
+    }
+};
+
+function getEnclave() {
+    var eReq = new XMLHttpRequest();
+    eReq.onload = function () {
+        if(this.responseText == 0) {
+            var label = document.createElement('label');
+            label.setAttribute('style', 'color:#FFFFFF; font-size: 8pt; padding-right:5px;');
+            label.setAttribute('for', 'userRoleSelector');
+            label.innerHTML = 'User Role';
+
+            var forecasterOption = document.createElement('option');
+            forecasterOption.setAttribute('value', 'forecaster');
+            forecasterOption.appendChild(document.createTextNode('Forecaster'));
+
+            var operationalOption = document.createElement('option');
+            operationalOption.setAttribute('value', 'operational');
+            operationalOption.appendChild(document.createTextNode('Operational'));
+
+            var select = document.createElement('select');
+            select.setAttribute('id', 'userRoleSelector');
+            select.appendChild(forecasterOption);
+            select.appendChild(operationalOption);
+
+            var form = document.createElement('form');
+            form.appendChild(label);
+            form.appendChild(select);
+
+            var userDiv = document.createElement('div');
+            userDiv.setAttribute('style', 'display:inline; padding-right: 5px; height: 30px; line-height: 30px; white-space: nowrap;');
+            userDiv.appendChild(form);
+
+            var div = document.getElementById('searchform');
+            div.setAttribute('style', 'display:inline-flex;');
+            div.insertBefore(userDiv, div.firstChild);
+
+            select.onchange = onUserRoleChanged;
+
+            getUserId();
+        }
+    };
+    eReq.open("get", getEnclaveUrl, true);
+    eReq.send();
+}
+
+function getUserId() {
+    var uReq = new XMLHttpRequest();
+    uReq.onload = function() {
+        userID = this.responseText;
+        pref_url = praeferentiaUserRoleURL + userID + '/USER_ROLE.json';
+        getUserRolePrefs();
+    };
+    uReq.open("get", "/AFW_WEBS/XML/uid.php", true);
+    uReq.send();
+}
+
+function getUserRolePrefs() {
+    if (user_role_prefs_loaded)
+        return;
+
+    $.getJSON(pref_url)
+        .done(function(prefs) {
+            if (!prefs) {
+                prefs = {};
+            }
+            if (!prefs.pref) {
+                prefs.pref = {};
+            }
+            if (!prefs.pref.userRole) {
+                prefs.pref.userRole = "forecaster";
+            }
+
+            user_role_prefs = prefs;
+            user_role_prefs_loaded = true;
+            loadUserRoleJSON();
+        })
+        .fail(function() {
+            alert('The server failed to load preferences. ' + pref_url);
+            user_role_prefs_loaded = false;
+            setSelectedUserRole();
+        });
+}
+
+function loadUserRoleJSON() {
+    var xobj = new XMLHttpRequest();
+    xobj.overrideMimeType("application/json");
+    xobj.open('GET', operational_user_role['json_path'], true);
+    xobj.onreadystatechange = function() {
+        if(xobj.readyState == 4 && xobj.status == "200") {
+            parseUserRoleJson(JSON.parse(xobj.responseText));
+        }
+    };
+    xobj.send(null);
+}
+
+function parseUserRoleJson(json) {
+    operational_user_role['json'] = json;
+    operational_user_role['navigation'] = json['navigation'];
+    operational_user_role['layers'] = json['layers'];
+
+    setSelectedUserRole();
+}
+
+function setSelectedUserRole() {
+    switch(user_role_prefs.pref.userRole) {
+        case 'forecaster':
+            user_role_selection_index = 0;
+            break;
+        case 'operational':
+            user_role_selection_index = 1;
+            break;
+        default:
+            user_role_selection_index = 0;
+            break;
+    }
+
+    document.getElementById('userRoleSelector').selectedIndex = user_role_selection_index;
+    updateNavigation();
+}
+
+function updateNavigation() {
+    var selectedRole = user_role_prefs.pref.userRole;
+    var children = $('#nav').find('li');
+
+    for(var i = 1; i < children.length; ++ i) {
+        if(selectedRole == 'operational') {
+            var htmlText = children[i].innerText.split('\n');
+            var label = htmlText[0].replace(' »', '');
+            var result = findItemByName(label, operational_user_role['navigation']);
+
+            if(result != undefined && result == false || result == 'false')
+                setNavDisplay(children[i], 'none');
+            else
+                setNavDisplay(children[i], 'inline');
+        } else {
+            setNavDisplay(children[i], 'inline');
+        }
+    }
+}
+
+function findItemByName(name, ob) {
+    return searchForItem(name, ob);
+}
+
+function searchForItem(name, ob) {
+    for(var prop in ob) {
+        if(prop == name) {
+            if(ob[prop] instanceof Object) {
+                return true;
+            } else {
+                return ob[prop];
+            }
+        } else if (ob[prop] instanceof Object) {
+            var subsearch = searchForItem(name, ob[prop]);
+            if(subsearch == true || subsearch == false) {
+                return subsearch;
+            }
+        }
+    }
+}
+
+function setNavDisplay(nav, prop) {
+    if(!nav.classList.contains('notNIPR')) {
+        nav.style.display = prop;
+    }
+}
+
+function onUserRoleChanged() {
+    user_role_prefs.pref.userRole = document.getElementById('userRoleSelector').value;
+    userRolePrefsSaveRequest('userRole');
+    updateNavigation();
+}
+
+function userRolePrefsSaveRequest(key) {
+    if (userID && userID !== "") {
+        $.post(pref_url, {
+            'contentType': 'application/json',
+            'valueAsJson': 'true',
+            '_method': 'PUT',
+            'value': JSON.stringify(user_role_prefs.pref[key]),
+            'key': key
+        })
+            .done(function() {})
+            .fail(function(xhr) {
+                if (xhr.status === 429) {
+                    afwUtil.pseudoRedirectThrottled(xhr);
+                }
+                alert('The server failed to save preferences.');
+            });
+        // Since the user has saved new preferences we shouldn't keep prompting the user
+        user_role_prefs_loaded = true;
+    } else {
+        alert("You are not logged into AFW-WEBS. Your preferences have NOT been saved on the server.");
+    }
+}
+
+function checkJQueryLoaded() {
+    if (window.jQuery) {
+        getEnclave();
+    } else {
+        setTimeout ( function() {
+            checkJQueryLoaded()
+        }, 50);
+    }
+}
+
+if(useUserRoles) {
+    if (window.attachEvent) {
+        window.attachEvent('onload', checkJQueryLoaded);
+    } else if (window.addEventListener) {
+        window.addEventListener('load', checkJQueryLoaded, false);
+    } else {
+        document.addEventListener('load', checkJQueryLoaded, false);
+    }
+}

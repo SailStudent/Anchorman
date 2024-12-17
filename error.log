@@ -1,0 +1,65 @@
+ERROR:root:Error occurred: Could not find the TLS key file, invalid path: bdppassword1
+ERROR:root:Error occurred: Could not find the TLS certificate file, invalid path: c:\servicesnchorman.p12
+ERROR:root:Error occurred: Could not find the TLS certificate file, invalid path: c:/services/anchorman.p12
+ERROR:root:Error occurred: Could not find the TLS key file, invalid path: bdppassword1
+ERROR:root:Error occurred: Session.request() got an unexpected keyword argument 'pkcs12_filename'
+ERROR:root:Error occurred: 18 columns passed, passed data had 75 columns
+ERROR:root:Error occurred: 16 columns passed, passed data had 72 columns
+ERROR:root:Error occurred: 16 columns passed, passed data had 69 columns
+ERROR:root:Error occurred: Chat API request failed with status code: 504
+ERROR:root:Error occurred: name 'parse_response_to_dataframe' is not defined
+ERROR:root:Error occurred: too many values to unpack (expected 2)
+ERROR:root:Error occurred: too many values to unpack (expected 2)
+ERROR:root:Error occurred: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+ERROR:root:Error occurred: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+ERROR:root:Error occurred: HTTPSConnectionPool(host='omni.army.mil', port=443): Max retries exceeded with url: /camogptapi/model/v1/chat/completions (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000001CFE339E3C0>, 'Connection to omni.army.mil timed out. (connect timeout=None)'))
+ERROR:root:Error occurred: HTTPSConnectionPool(host='omni.army.mil', port=443): Max retries exceeded with url: /camogptapi/model/v1/chat/completions (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000001CFE340B9E0>, 'Connection to omni.army.mil timed out. (connect timeout=None)'))
+ERROR:root:Error occurred: HTTPSConnectionPool(host='omni.army.mil', port=443): Max retries exceeded with url: /camogptapi/model/v1/chat/completions (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000001CFE339F650>, 'Connection to omni.army.mil timed out. (connect timeout=None)'))
+ERROR:root:Error occurred: HTTPSConnectionPool(host='omni.army.mil', port=443): Max retries exceeded with url: /camogptapi/model/v1/chat/completions (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000001CFE340A0F0>, 'Connection to omni.army.mil timed out. (connect timeout=None)'))
+ERROR:root:Error occurred: HTTPSConnectionPool(host='omni.army.mil', port=443): Max retries exceeded with url: /camogptapi/model/v1/chat/completions (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000001CFE3409C40>, 'Connection to omni.army.mil timed out. (connect timeout=None)'))
+ERROR:root:Error occurred: HTTPSConnectionPool(host='omni.army.mil', port=443): Max retries exceeded with url: /camogptapi/model/v1/chat/completions (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000001CB64AD5100>, 'Connection to omni.army.mil timed out. (connect timeout=None)'))
+ERROR:root:Error occurred: HTTPSConnectionPool(host='omni.army.mil', port=443): Max retries exceeded with url: /camogptapi/model/v1/chat/completions (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000002613F006AE0>, 'Connection to omni.army.mil timed out. (connect timeout=None)'))
+ERROR:root:Error occurred: HTTPSConnectionPool(host='omni.army.mil', port=443): Max retries exceeded with url: /camogptapi/model/v1/chat/completions (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000001CFD126DDC0>, 'Connection to omni.army.mil timed out. (connect timeout=None)'))
+ERROR:root:Error occurred: HTTPSConnectionPool(host='omni.army.mil', port=443): Max retries exceeded with url: /camogptapi/model/v1/chat/completions (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000001CFE3408890>, 'Connection to omni.army.mil timed out. (connect timeout=None)'))
+ERROR:root:Error occurred: HTTPSConnectionPool(host='omni.army.mil', port=443): Max retries exceeded with url: /camogptapi/model/v1/chat/completions (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000001CFE3416BD0>, 'Connection to omni.army.mil timed out. (connect timeout=None)'))
+ERROR:root:Error occurred: HTTPSConnectionPool(host='omni.army.mil', port=443): Max retries exceeded with url: /camogptapi/model/v1/chat/completions (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000001CFE3417380>, 'Connection to omni.army.mil timed out. (connect timeout=None)'))
+ERROR:root:Error occurred: HTTPSConnectionPool(host='omni.army.mil', port=443): Max retries exceeded with url: /camogptapi/model/v1/chat/completions (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000001CFE340B5C0>, 'Connection to omni.army.mil timed out. (connect timeout=None)'))
+ERROR:root:Error occurred: HTTPSConnectionPool(host='omni.army.mil', port=443): Max retries exceeded with url: /camogptapi/model/v1/chat/completions (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000001CFE339F6E0>, 'Connection to omni.army.mil timed out. (connect timeout=None)'))
+ERROR:root:Error occurred: HTTPSConnectionPool(host='omni.army.mil', port=443): Max retries exceeded with url: /camogptapi/model/v1/chat/completions (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000001CFE3409310>, 'Connection to omni.army.mil timed out. (connect timeout=None)'))
+ERROR:root:Error occurred: Chat API request failed with status code: 404
+ERROR:root:Error occurred: Chat API request failed with status code: 504
+ERROR:root:Error occurred: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+ERROR:root:Error occurred: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+ERROR:root:Error occurred: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+ERROR:root:Error occurred: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+ERROR:root:Error occurred: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+ERROR:root:Error occurred: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+ERROR:root:Error occurred: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+ERROR:root:Error occurred: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+ERROR:root:Error parsing markdown table: 'ASCOPE/PMESII'
+ERROR:root:Error parsing markdown table: 'Series' object has no attribute 'strip'
+ERROR:root:Error parsing markdown table: Can only use .str accessor with string values!
+ERROR:root:Error parsing markdown table: 'DataFrame' object has no attribute 'str'
+ERROR:root:Error occurred: Chat API request failed with status code: 504
+ERROR:root:Error occurred: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+ERROR:root:Error occurred: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+ERROR:root:Error parsing JSON data: Expecting value: line 1 column 1 (char 0)
+ERROR:root:Error parsing JSON data: Expecting property name enclosed in double quotes: line 2 column 3 (char 4)
+ERROR:root:Error occurred: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+ERROR:root:Error occurred: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+ERROR:root:Error parsing JSON data: Expecting ',' delimiter: line 167 column 7 (char 6835)
+ERROR:root:Error parsing JSON data: Expecting ':' delimiter: line 51 column 73 (char 2169)
+ERROR:root:Error parsing JSON data: Expecting value: line 77 column 44 (char 3253)
+ERROR:root:Error occurred: HTTPSConnectionPool(host='omni.army.mil', port=443): Max retries exceeded with url: /camogptapi/model/v1/chat/completions (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001DE0E7D16A0>: Failed to resolve 'omni.army.mil' ([Errno 11001] getaddrinfo failed)"))
+ERROR:root:Error occurred: HTTPSConnectionPool(host='omni.army.mil', port=443): Max retries exceeded with url: /camogptapi/model/v1/chat/completions (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001DE0E7D1490>: Failed to resolve 'omni.army.mil' ([Errno 11001] getaddrinfo failed)"))
+ERROR:root:Error occurred: HTTPSConnectionPool(host='omni.army.mil', port=443): Max retries exceeded with url: /camogptapi/model/v1/chat/completions (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001DE0E7D29C0>: Failed to resolve 'omni.army.mil' ([Errno 11001] getaddrinfo failed)"))
+ERROR:root:Error parsing JSON data: Expecting ',' delimiter: line 141 column 7 (char 5848)
+ERROR:root:Error occurred: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+ERROR:root:Error parsing JSON data: Expecting value: line 77 column 48 (char 4250)
+ERROR:root:Error parsing JSON data: Expecting ':' delimiter: line 31 column 131 (char 2175)
+ERROR:root:Error parsing JSON data: Expecting ',' delimiter: line 173 column 7 (char 12483)
+ERROR:root:Error occurred: HTTPSConnectionPool(host='omni.army.mil', port=443): Max retries exceeded with url: /camogptapi/model/v1/chat/completions (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000201ED5C5C70>, 'Connection to omni.army.mil timed out. (connect timeout=None)'))
+ERROR:root:Error occurred: HTTPSConnectionPool(host='omni.army.mil', port=443): Max retries exceeded with url: /camogptapi/model/v1/chat/completions (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000201ED5C74D0>, 'Connection to omni.army.mil timed out. (connect timeout=None)'))
+ERROR:root:Error occurred: HTTPSConnectionPool(host='omni.army.mil', port=443): Max retries exceeded with url: /camogptapi/model/v1/chat/completions (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000201ED5C56D0>, 'Connection to omni.army.mil timed out. (connect timeout=None)'))
+ERROR:root:Error occurred: HTTPSConnectionPool(host='omni.army.mil', port=443): Max retries exceeded with url: /camogptapi/model/v1/chat/completions (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000201ED5C5100>, 'Connection to omni.army.mil timed out. (connect timeout=None)'))
+ERROR:root:Error occurred: HTTPSConnectionPool(host='omni.army.mil', port=443): Max retries exceeded with url: /camogptapi/model/v1/chat/completions (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000201ED5C64B0>, 'Connection to omni.army.mil timed out. (connect timeout=None)'))

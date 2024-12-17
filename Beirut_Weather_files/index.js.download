@@ -1,0 +1,208 @@
+require([
+    './js/requests.js',
+    './js/widgets.js',
+    './js/products.js',
+    './js/templates.js',
+    'afwUtil',
+    'jquery',
+    'navigationFooterTheme',
+    'domReady!'
+], function(requests, widgets, products, templates, afwUtil) {
+    'use strict';
+
+    var dataType = {
+        POINTFORECAST       : "model_data",
+        MODELBASEDOUTLOOK   : "model_data",
+        PEP                 : "model_data",
+        SOLAR               : "model_data",
+        RADAR               : "obs_data",
+        IR                  : "obs_data",
+        TAF                 : "model_data",
+        METAR               : "obs_data"
+    };
+
+    var widgetList = [];
+
+    function initPage(stationInfo, preloadedData, productsToUse) {
+        preloadedData = preloadedData || {};
+
+        $("#point_data").empty();
+
+        // We can't start loading stuff from the queue until we have our location metadata
+        $.each(productsToUse, function(idx, productToUse) {
+            var product = products[productToUse];
+            var anchorName = "widget_" + idx;
+            var WidgetClass = widgets[product['widgetClass']];
+            var widgetConstructor = {anchorName: anchorName, product: product, location: stationInfo, preloadedData: preloadedData};
+            var widget = WidgetClass(widgetConstructor);
+            widget.type = productToUse;
+            widgetList.push(widget);
+            var request = widget.request();
+            if(product.location) {
+                $("#" + product.location).append(widget.div());
+            } else {
+                $("#point_data").append(widget.div());
+                $("#nav-list").append($("<li><a href=#" + anchorName + ">" + widget.navtitle() + "</a></li>"));
+            }
+
+            ajaxManager.enqueue(request);
+        });
+
+
+        $("#navbar a").click(function(evt) {
+            if ($('#navbar').hasClass('topbar')) {
+                var id = $(this).attr("href");
+                var offset = getNormalizedOffest(id);
+
+                evt.preventDefault();
+
+                $('html,body').scrollTop(offset);
+            }
+        });
+
+        ajaxManager.enable();
+    };
+
+    function getNormalizedOffest(id) {
+        var normalizedId = id.slice(id.lastIndexOf('#'),id.length); // Normalize href attribute between IE and non-IE
+        var offset = $(normalizedId).offset().top - $("#scroller").outerHeight();
+
+        return offset;
+    }
+
+    function placeNavDiv() {
+        var windowWidth = $(window).width();
+
+        if (windowWidth <= 1580 && $('#navbar').hasClass('sidebar')) {
+            $('#navbar').addClass('topbar').removeClass('sidebar');
+            $('#scroller').addClass('top-scroller').removeClass('side-scroller');
+            $('#navbar').css('min-height', $('#scroller').outerHeight());
+
+        } else if (windowWidth > 1580 && $('#navbar').hasClass('topbar')) {
+            $('#navbar').addClass('sidebar').removeClass('topbar');
+            $('#scroller').addClass('side-scroller').removeClass('top-scroller');
+            $('#navbar').css('min-height', $('#scroller').outerHeight());
+
+        }
+    }
+
+    placeNavDiv();
+
+    function widgetRefresh(widgetType) {
+        $.each(productsToUse, function(idx, productToUse) {
+            $.each(widgetList, function(iidx, widget) {
+                if (dataType[widget.type] === widgetType) {
+                    var request = widget.request();
+                    ajaxManager.enqueue(request);
+                }
+            });
+        });
+    }
+
+    setInterval(function() {
+        widgetRefresh("model_data");
+    }, 3600000);
+
+    setInterval(function() {
+        widgetRefresh("obs_data");
+    }, 900000);
+
+    $(window).resize(placeNavDiv);
+
+    $(window).scroll(function() {
+        var st = $(window).scrollTop();
+        var ot = $("#scroller-anchor").offset().top;
+        var s = $("#scroller");
+        if(st > ot) {
+            s.css({
+                position: "fixed",
+                top: "0px"
+            });
+        } else {
+            if(st <= ot) {
+                s.css({
+                    position: "relative",
+                    top: ""
+                });
+            }
+        }
+    });
+
+    var ajaxManager = requests.AjaxManager();
+    var loc = URL_PARAMS['LOC'];
+    var placeID = URL_PARAMS['PLACEID'];
+    var stationInfo = null;
+    var preloadedData = null;
+    var metadataURL = null;
+    var locMatch = null;
+    var defaultProductsWithObsTafs = ["STATION", "POINTFORECAST", "MODELBASEDOUTLOOK", "TAF", "METAR",  "PEP", "RADAR", "IR", "SOLAR"];
+    var defaultProductsWithoutObsTafs = ["STATION", "POINTFORECAST", "MODELBASEDOUTLOOK", "PEP", "RADAR", "IR", "SOLAR"];
+    var productsToUse = null;
+
+    if ('WIDGETS' in URL_PARAMS) {
+        productsToUse = URL_PARAMS['WIDGETS'].split(',');
+    }
+
+    if (loc) {
+        // For consistency with existing products, either lat,lon or ICAO can show up in LOC parameter.
+        if (locMatch = loc.match(/(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/)) {
+            stationInfo = {latitude: parseFloat(locMatch[1]), longitude: parseFloat(locMatch[2])};
+            preloadedData = {};
+            productsToUse = productsToUse || defaultProductsWithoutObsTafs;
+
+        } else {
+            metadataURL = "/services/MISC?SERVICE=MISC&REQUEST=script/station_data&TYPE=tafs,metars&HOURS=6&" + $.param({"LOC": loc});
+            productsToUse = productsToUse || defaultProductsWithObsTafs;
+
+        }
+
+    } else if (placeID) {
+        metadataURL = "/services/MISC?SERVICE=MISC&REQUEST=script/station_data&TYPE=&HOURS=6&" + $.param({"PLACEID": placeID});
+        productsToUse = productsToUse || defaultProductsWithoutObsTafs;
+
+    } else {
+        $("#point_data").empty();
+        $("#point_data").append(templates.ErrorTemplate({title: "Location", message: "You must enter either a LOC or PLACEID."}));
+        return;
+    }
+
+    function throwAjaxError(data, textStatus, jqXHR) {
+        if (data.status === 429) {
+            afwUtil.pseudoRedirectThrottled(data);
+        } else {
+            $("#point_data").empty();
+            var error_msg;
+            if ("responseText" in data) {  // errors thrown by pywebservice may be returned as the responseText of data
+                error_msg = data['responseText'];
+            } else {  // otherwise, it's a json object and we're returning an error key (but "error" key exists in above responses so check that first)
+                error_msg = data['error'];
+            }
+            $("#point_data").append(templates.ErrorTemplate({title: "Location", message: error_msg}));
+            return;
+        }
+    }
+
+    if (stationInfo && preloadedData) {
+        initPage(stationInfo, preloadedData, productsToUse);
+
+    } else if (metadataURL) {
+        $.ajax({
+            dataType: "json",
+            url: metadataURL,
+            error: function(xhr) {
+                throwAjaxError(xhr);
+            },
+            success: function(stations_metadata, textStatus, jqXHR) {
+                if ("error" in stations_metadata) {
+                    throwAjaxError(stations_metadata, textStatus, jqXHR);
+                    return;
+                }
+                var stations_metadata = stations_metadata[0];
+                if (stations_metadata['station_info'].wmo_id) {
+                    productsToUse = defaultProductsWithoutObsTafs;
+                }
+                initPage(stations_metadata['station_info'], stations_metadata, productsToUse);
+            }
+        });
+    }
+});

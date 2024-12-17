@@ -1,0 +1,504 @@
+/**********************************************************
+Theme Name: Situational Awareness CSS
+Author: Mr. Robert Kintz
+Description: Adapted from the 5 day forecast product
+**********************************************************/
+#mainbar-wrap {
+    float: left;
+    width: 100%;
+}
+
+#mainbar {
+    width: 100%;
+    margin-right: 252px;
+}
+
+#five_day {
+    overflow: auto;
+}
+
+#five_day > table {
+    empty-cells: show;
+}
+
+#scroller span {
+    width: 100%;
+}
+
+#scroller ul {
+    padding-top: 10px;
+
+}
+
+#navbar table {
+    width: 100%;
+}
+
+.sidebar {
+    float: left;
+    width: 300px;
+    margin-left: -300px;
+}
+
+.sidebar #side-widgets {
+    margin-left: 30px;
+}
+
+.side-scroller {
+    width: 252px;
+}
+
+#side-widgets {
+    border-style: solid;
+    border-width: 1px;
+}
+
+.sidebar .test2 {
+    font-size: 9px;
+}
+
+.top-scroller {
+    border-bottom: 1px solid black;
+    background-color: #F1F1F1;
+    z-index: 10;
+    text-align: center;
+    padding: 20px 20px 20px 20px;
+    width: 926px;
+}
+
+#clear {
+    clear: both;
+}
+
+.sidebar > li {
+    margin-bottom: 20px;
+}
+
+.sidebar > li h6 {
+    padding-bottom: 20px;
+}
+
+.sidebar ul > li {
+    font-size: 14px;
+    line-height: 40px;
+    text-decoration: none;
+    border-bottom: 1px solid #d7d7d7;
+}
+
+.sidebar ul > li:last-child {
+    border-bottom: none;
+}
+
+.sidebar ul > li a {
+    display: block;
+    height: 100%;
+    width: 100%;
+    text-decoration: none;
+    color: #696969;
+}
+
+.sidebar ul > li:hover {
+    background: #f1f1f1;
+}
+
+.sidebar ul {
+    list-style-type: none;
+}
+
+.topbar ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    text-align: center;
+}
+
+.topbar ul li {
+    display: inline;
+}
+
+.topbar ul li a {
+    text-decoration: none;
+    padding: .2em 1em;
+    text-decoration: none;
+    color: #696969;
+    display: inline;
+}
+
+.topbar ul li:hover {
+    background: #f1f1f1;
+}
+
+.information {
+    display: block;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.imageholder img {
+    display: block;
+    text-decoration: none;
+    border: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+.mapholder {
+    width: 100%;
+    height: 490px;
+}
+
+.legendholder {
+    width: 100%;
+    height: 50px;
+}
+
+.icon {
+    padding: 0px;
+}
+
+tr.bottomborder td {
+    border-bottom: 1px solid #7d7d7d;
+}
+
+tr.bottomborder th {
+    border-bottom: 1px solid #7d7d7d;
+}
+
+.container {
+    margin: 0 auto;
+    border: 1px solid #000;
+}
+
+.leftside {
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    color: #000;
+    background-color: #a4c5e8;
+    padding: 5px;
+    vertical-align: middle;
+    border-right: 2px solid #7d7d7d;
+}
+
+.table_subheader_lg {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #2f3c86;
+    padding: 1px 3px 1px 6px;
+}
+
+.table_subheader_med {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 11px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #2f3c86;
+    padding: 1px 3px 1px 6px;
+}
+
+.table_subheader_sm {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #5966ac;
+    padding: 1px 3px 1px 6px;
+}
+
+.span_subheader_lg {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #2f3c86;
+    padding: 0px;
+    display: block;
+}
+
+a.looperlink:link {
+    text-decoration: none;
+    color: #ffffff !important;
+}
+
+a.looperlink:visited {
+    color: #ffffff !important;
+}
+
+a.looperlink:active {
+    color: #ffffff !important;
+}
+
+a.looperlink:hover {
+    color: #ffffff !important;
+}
+
+.span_subheader_sm {
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+    color: #fff;
+    font-size: 13px;
+    background-color: #5966ac;
+    padding: 0px;
+}
+
+.suntable {
+    width: 100%;
+}
+
+.taf {
+    vertical-align: top;
+    font-size: 12px;
+    color: #000;
+    background-color: #a4Cce8;
+    padding: 1px 3px 1px 6px;
+}
+
+.taf_line {
+    white-space: pre;
+    display: block;
+}
+
+.info_line {
+    white-space: pre;
+    display: block;
+    font-size: 10px;
+    font-weight: bold;
+    color: #000;
+    background-color: #a4Cce8;
+}
+
+.test {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 13px;
+    color: #000;
+    padding: 2px 2px 2px 3px;
+}
+
+.test2 {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 12px;
+    color: black;
+    background-color: #a4c5e8;
+    padding: 2px 2px 2px 3px;
+}
+
+.label {
+    font-size: 10px;
+    padding: 0;
+}
+
+.time {
+    font-size: 10px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.wx_width {
+    width: 100px;
+}
+
+.small_text {
+    font-size: 10px;
+}
+
+td.test, td.test2 {
+    border-right: 1px solid #7d7d7d;
+}
+
+td.test:last-child {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+td.test2:last-child {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+#metar_data table {
+    position: relative;
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+
+#metar_data tr {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+
+#taf_data table {
+    position: relative;
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+
+#taf_data tr {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+
+#table td {
+    white-space: nowrap;
+    font-family: Verdana;
+    font-size: 14;
+    vertical-align: baseline;
+    font-style: bolder;
+
+    padding-left: 5px;
+}
+
+/* PEP Bulletin Section */
+.label_table {
+    position: absolute;
+    left: 0;
+    width: 200px;
+    border-spacing: 0px;
+    padding: 0;
+    border-left: 1px solid black;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+    background-color: #C5D9F1;
+}
+
+.data_wrapper {
+    position: relative;
+    left: 200px;
+    margin-right: 200px;
+    border-top: 1px solid black;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+.data_table {
+    width: 100%;
+    border-spacing: 0px;
+    padding: 0;
+    -webkit-transition: box-shadow linear 1s;
+    transition: box-shadow linear 1s;
+    -o-transition: box-shadow 1s linear;
+    animation: highlight 1s;
+}
+
+.model {
+    font-weight: bold;
+    text-align: left;
+    white-space: normal;
+}
+
+.day {
+    font-weight: bold;
+    text-align: center;
+    background-color: #C5D9F1;
+}
+
+.category {
+    font-weight: bold;
+    text-align: left;
+    border-bottom: 2px solid black;
+}
+
+.hour {
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 2px solid black;
+    background-color: #C5D9F1;
+}
+
+.row_label {
+    font-weight: normal;
+    text-align: left;
+    border-bottom: 1px solid black;
+}
+
+.value {
+    font-weight: normal;
+    text-align: center;
+    border-bottom: 1px solid black;
+}
+
+.zero {
+    border-left: 2px solid black;
+}
+
+.Extreme {
+    font-weight: bold;
+    color: #FF0000;
+}
+
+.High {
+    font-weight: bold;
+    color: #7E2217;
+}
+
+.Moderate {
+    font-weight: bold;
+    color: #DA926B;
+}
+
+.Medium {
+    font-weight: bold;
+    color: #91B747;
+}
+
+.Normal {
+    font-weight: bold;
+    color: #6D49B5;
+}
+
+.Low {
+    font-weight: bold;
+    color: #48DC23;
+}
+
+.Cold {
+    font-weight: bold;
+    color: #246E91;
+}
+
+.Freezing {
+    font-weight: bold;
+    color: #0000FF;
+}
+
+.Favorable {
+    background-color: #00FF00;
+    text-align: center;
+}
+
+.Unfavorable {
+    background: #FF3333;
+    text-align: center;
+}
+
+.Marginal {
+    background: #FFFF00;
+    text-align: center;
+}
+
+.markerOffset {
+    width: 25px;
+    height: 41px;
+    margin-top: -41px;
+    margin-left: -12px;
+}
+

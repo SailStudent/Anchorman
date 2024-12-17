@@ -1,0 +1,161 @@
+define([
+], function() {
+	return {
+		"FAIL": {
+			"url": "/fail",
+			"title": "Fail...",
+			"navtitle": "Fail",
+			"widgetClass": "AjaxWidget",
+			"parameters": {
+			}
+		},
+
+		"POINTFORECAST": {
+			"url": "/services/MISC",
+			"title": "5-day Forecast",
+			"navtitle": "5-day Forecast",
+			"widgetClass": "PointForecastWidget",
+			"parameters": {
+				"SERVICE": "MISC",
+				"REQUEST": "script/point_forecast",
+				"SOURCE": "GALWEM",
+				"VIEW": "WIDGET"
+			}
+		},
+
+		"MODELBASEDOUTLOOK" : {
+			"url": "/services/MISC",
+			"title": "Model Based Outlook",
+			"navtitle": "Model Based Outlook",
+			"widgetClass": "PointForecastWidget",
+			"parameters": {
+                "SERVICE": "MISC",
+                "REQUEST": "script/auto_fcst",
+                "SOURCE": "GALWEM",
+				"Duration": "48"
+            }
+		},
+
+		"PEP": {
+			"url": "/services/WPS",
+			"title": "Probability of Significant Weather",
+			"navtitle": "Probability of Significant Weather",
+			"widgetClass": "PEPWidget",
+			"parameters": {
+				"SERVICE": "WPS",
+				"REQUEST": "Execute",
+				"SOURCE": "GEPS",
+				"RAWDATAOUTPUT": "pep",
+				"IDENTIFIER": "get_pep",
+				"VERSION": "1.0.0"
+			}
+		},
+
+		"SOLAR": {
+			"url": "/services/MISC",
+			"title": "Sunrise/Sunset and Moon Phases",
+			"navtitle": "Sunrise/Sunset and Moon Phases",
+			"widgetClass": "SolarWidget",
+			"parameters": {
+				"SERVICE": "MISC",
+				"REQUEST": "script/suntable",
+				"SOURCE": "SLAC"
+			}
+		},
+
+		"RADAR": {
+			"title": "Radar",
+			"navtitle": "Radar",
+			"widgetClass": "RadarWidget",
+			"widgetName": "radar_widget",
+			"legendName": "radar_legend",
+			"bboxSize": 150,
+			"width": "962",
+			"height": "540",
+			"zoom" : "7",
+			"wms": {
+				"URL": "/services/WMS",
+				"PARAMETERS": {
+					"REQUEST": "GetMap",
+					"SERVICE": "WMS",
+					"VERSION": "1.3.0",
+					"CRS": "CRS:84",
+					"CONUS_LAYERS": "LAND,MRMS_CONUS_Composite_Refl_QC,LAT_LON,BOUNDARIES,POPULATED_PLACES",
+					"EURO_RADARS" : "LAND,European_Radar_Rain_Rate,LAT_LON,BOUNDARIES,POPULATED_PLACES",
+					"OCONUS_LAYERS": "LAND,OConus_Base_Reflectivity,LAT_LON,BOUNDARIES,POPULATED_PLACES",
+					"STYLES": "default,default,default,default,default",
+					"FORMAT": "image/png",
+					"TRANSPARENT": "TRUE"
+				}
+			},
+			"station_service": {
+				"URL": "/services/MISC",
+				"PARAMETERS": {
+					"SERVICE": "MISC",
+					"REQUEST": "script/station_service",
+					"BBOX": "-180,-90,180,90",
+					"FORMAT": "KML",
+					"ICAO": null
+				}
+			}
+		},
+
+		"IR": {
+			"title": "Satellite",
+			"navtitle": "Satellite",
+			"widgetClass": "IRWidget",
+			"widgetName": "ir_widget",
+			"legendName": "ir_legend",
+			"bboxSize": 300,
+			"width": "962",
+			"height": "540",
+			"zoom" : "6",
+			"wms": {
+				"URL": "/services/WMS",
+				"PARAMETERS": {
+					"REQUEST": "GetMap",
+					"SERVICE": "WMS",
+					"VERSION": "1.3.0",
+					"CRS": "CRS:84",
+					"LAYERS": "LAND,CDFSII_GLOBAL_DISK_IR,LAT_LON,BOUNDARIES,POPULATED_PLACES",
+					"STYLES": "default,GLOBAL_IR_MB,default,yellow_boundaries,default",
+					"FORMAT": "image/png",
+					"TRANSPARENT": "TRUE"
+				}
+			},
+			"station_service": {
+				"URL": "/services/MISC",
+				"PARAMETERS": {
+					"SERVICE": "MISC",
+					"REQUEST": "script/station_service",
+					"BBOX": "-180,-90,180,90",
+					"FORMAT": "KML",
+					"ICAO": null
+				}
+			}
+		},
+
+		"TAF": {
+			"preloadedData": "tafs",
+			"widgetClass": "TAFWidget",
+			"title": "Airfield Forecast",
+			"navtitle": "Airfield Forecast"
+
+		},
+
+		"METAR": {
+			"preloadedData": "metars",
+			"widgetClass": "METARWidget",
+			"title": "Current Conditions",
+			"navtitle": "Current Conditions"
+		},
+
+		"STATION": {
+			"preloadedData": "station_info",
+			"widgetClass": "StationWidget",
+			"title": "Location",
+			"navtitle": "Location",
+			"location": "side-widgets"
+		}
+	};
+});

@@ -1,0 +1,101 @@
+define([
+], function() {
+    return [
+        // Hawaii
+        {
+            "icao": "PHKM",
+            "latitude": 20.133333333333333,
+            "longitude": -155.78333333333333
+        },
+        {
+            "icao": "PHKI",
+            "latitude": 21.9,
+            "longitude": -159.55
+        },
+        {
+            "icao": "PHKI",
+            "latitude": 21.9,
+            "longitude": -159.55
+        },
+        {
+            "icao": "PHWA",
+            "latitude": 19.1,
+            "longitude": -155.56666666666666
+        },
+        {
+            "icao": "PHMO",
+            "latitude": 21.133333333333333,
+            "longitude": -157.18333333333334
+        },
+        // Guam
+        {
+            "icao": "PGUA",
+            "latitude": 13.566666666666666,
+            "longitude": 144.91666666666666
+        },
+        // Korea
+        {
+            "icao": "RKJK",
+            "latitude": 35.903756,
+            "longitude": 126.615906
+        },
+        {
+            "icao": "RKSG",
+            "latitude": 36.9666666,
+            "longitude": 127.0333333
+        },
+        //Japan
+        {
+            "icao": "RODN",
+            "latitude": 26.355612,
+            "longitude": 127.767633
+        },
+        // Alaska
+        {
+            "icao": "PAKC",
+            "latitude": 58.68333333333333,
+            "longitude": -156.63333333333333
+        },
+        {
+            "icao": "PACG",
+            "latitude": 56.85,
+            "longitude": -135.53333333333333
+        },
+        {
+            "icao": "PAEC",
+            "latitude": 62.88,
+            "longitude": -149.83
+        },
+        {
+            "icao": "PAIH",
+            "latitude": 59.46666666666667,
+            "longitude": -146.3
+        },
+        {
+            "icao": "PAHG",
+            "latitude": 60.733333333333334,
+            "longitude": -151.35
+        },
+        {
+            "icao": "PABC",
+            "latitude": 60.8,
+            "longitude": -161.88333333333333
+        },
+        {
+            "icao": "PAPD",
+            "latitude": 65.03333333333333,
+            "longitude": -147.5
+        },
+        // Puerto Rico
+        {
+            "icao": "TJUA",
+            "latitude": 18.116666666666667,
+            "longitude": -66.08333333333333
+        },
+        {
+            "icao": "TJSJ",
+            "latitude": 18.43917,
+            "longitude": -66.001833
+        }
+    ];
+});

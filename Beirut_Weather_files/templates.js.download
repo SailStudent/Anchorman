@@ -1,0 +1,129 @@
+define([
+    'moment',
+    'text!/AFW_WEBS/LocalWeather/templates/error.hbs',
+    'text!/AFW_WEBS/LocalWeather/templates/loading.hbs',
+    'text!/AFW_WEBS/LocalWeather/templates/radarWrapper.hbs',
+    'text!/AFW_WEBS/LocalWeather/templates/irWrapper.hbs',
+    'text!/AFW_WEBS/LocalWeather/templates/taf.hbs',
+    'text!/AFW_WEBS/LocalWeather/templates/metar.hbs',
+    'text!/AFW_WEBS/LocalWeather/templates/stationInfo.hbs',
+    'handlebars',
+], function(moment_time,
+            errorTemplateText,
+            loadingTemplateText,
+            RadarWrapperText,
+            IRWrapperText,
+            TAFWrapperText,
+            METARWrapperText,
+            StationInfoText) {
+
+    'use strict';
+
+    var templates = {};
+
+    templates.ErrorTemplate = Handlebars.compile(errorTemplateText);
+    templates.LoadingTemplate = Handlebars.compile(loadingTemplateText);
+    templates.RadarTemplate = Handlebars.compile(RadarWrapperText);
+    templates.IRTemplate = Handlebars.compile(IRWrapperText);
+    templates.TAFTemplate = Handlebars.compile(TAFWrapperText);
+    templates.METARTemplate = Handlebars.compile(METARWrapperText);
+    templates.StationInfoTemplate = Handlebars.compile(StationInfoText);
+
+    Handlebars.registerHelper('time_handle', function(time){
+        var moment_time = moment.utc(time*1000);
+        return moment_time.format('HHmm');
+    });
+
+    Handlebars.registerHelper('date_handle', function(time){
+        var moment_time = moment.utc(time*1000);
+        return moment_time.format('DD MMM YY');
+    });
+
+    Handlebars.registerHelper('lat_lon_handle', function(latLon){
+        return Math.round(latLon*10000)/10000;
+    });
+
+
+    Handlebars.registerHelper('vis_handle', function(vis){
+        var visibility = 0;
+        var meters = parseInt(vis);
+        if (isNaN(meters)){
+            visibility = "--";
+        }else if (meters === 9999){
+            visibility = "Unrestricted";
+        }else{
+            var miles = (meters / 1609.36356986).toFixed(1);
+            if (meters < 10000) {
+                visibility = Math.round(meters/100)*100 + "M / " + Math.round(miles) + "SM";
+            } else {
+                visibility = Math.round(meters/1000)*1000 + "M / " + Math.round(miles) + "SM";
+            }
+        }
+
+        return visibility;
+    });
+
+    Handlebars.registerHelper('temp_handle', function(temp){
+        var celsius = parseFloat(temp);
+        var temperature;
+
+        if (isNaN(celsius)){
+            temperature = "--";
+        }else{
+            var faren = Math.round(((celsius * 9) / 5) + 32);
+            temperature = Math.round(celsius) + "C / " + faren + "F";
+        }
+
+        return temperature;
+    });
+
+    Handlebars.registerHelper('windspeed_handle', function(wind){
+        if (!wind) {
+            return "--";
+        }
+
+        var speed = parseInt(wind.speed);
+
+        if (isNaN(speed)){
+            return "--";
+        }else {
+            if (wind.gust){
+                return speed + "G" + wind.gust;
+            }else{
+                return speed;
+            }
+        }
+    });
+
+    Handlebars.registerHelper('winddir_handle', function(wind){
+        if (!wind) {
+            return "--";
+        }
+
+    if (wind.variable || wind.direction < 0 || wind.direction >= 360){
+            return "VRB";
+        }else{
+            var direction = parseInt(wind.direction);
+
+            if (isNaN(direction)){
+                return "--";
+            }else {
+                return String(direction) + String.fromCharCode(176);
+            }
+        }
+    });
+
+    Handlebars.registerHelper('altimeter_handle', function(alt){
+        var altimeter = 0;
+        var inches_of_merc = parseFloat(alt);
+        if (isNaN(inches_of_merc)){
+            altimeter = "--";
+        }else{
+            var millibars = Math.round(inches_of_merc * 33.86);
+            altimeter = inches_of_merc.toFixed(2) + "inHg / " + millibars + "mb";
+        }
+        return altimeter;
+    });
+
+    return templates;
+});

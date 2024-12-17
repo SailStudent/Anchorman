@@ -1,0 +1,835 @@
+define([
+], function() {
+    return [
+        {
+            "icao": "PAHG",
+            "latitude": 60.733333333333334,
+            "longitude": -151.35
+        },
+        {
+            "icao": "PABC",
+            "latitude": 60.8,
+            "longitude": -161.88333333333333
+        },
+        {
+            "icao": "PAPD",
+            "latitude": 65.03333333333333,
+            "longitude": -147.5
+        },
+        {
+            "icao": "PAKC",
+            "latitude": 58.68333333333333,
+            "longitude": -156.63333333333333
+        },
+        {
+            "icao": "PAIH",
+            "latitude": 59.46666666666667,
+            "longitude": -146.3
+        },
+        {
+            "icao": "PAEC",
+            "latitude": 62.88,
+            "longitude": -149.83
+        },
+        {
+            "icao": null,
+            "latitude": 64.51666666666667,
+            "longitude": -165.3
+        },
+        {
+            "icao": "PACG",
+            "latitude": 56.85,
+            "longitude": -135.53333333333333
+        },
+        {
+            "icao": "KBMX",
+            "latitude": 33.166666666666664,
+            "longitude": -86.76666666666667
+        },
+        {
+            "icao": "KEOX",
+            "latitude": 31.466666666666665,
+            "longitude": -85.46666666666667
+        },
+        {
+            "icao": "KHTX",
+            "latitude": 34.93333333333333,
+            "longitude": -86.08333333333333
+        },
+        {
+            "icao": "KMXX",
+            "latitude": 32.53333333333333,
+            "longitude": -85.78333333333333
+        },
+        {
+            "icao": "KMOB",
+            "latitude": 30.683333333333334,
+            "longitude": -88.25
+        },
+        {
+            "icao": "KSRX",
+            "latitude": 35.28333333333333,
+            "longitude": -94.36666666666666
+        },
+        {
+            "icao": "KLZK",
+            "latitude": 34.833333333333336,
+            "longitude": -92.26666666666667
+        },
+        {
+            "icao": "KIWA",
+            "latitude": 33.3,
+            "longitude": -111.65
+        },
+        {
+            "icao": "KFSX",
+            "latitude": 34.56666666666667,
+            "longitude": -111.2
+        },
+        {
+            "icao": "KEMX",
+            "latitude": 31.9,
+            "longitude": -110.63333333333334
+        },
+        {
+            "icao": "KYUX",
+            "latitude": 32.5,
+            "longitude": -114.65
+        },
+        {
+            "icao": "KBBX",
+            "latitude": 39.5,
+            "longitude": -121.63333333333334
+        },
+        {
+            "icao": "KEYX",
+            "latitude": 35.1,
+            "longitude": -117.56666666666666
+        },
+        {
+            "icao": "KHNX",
+            "latitude": 36.31666666666667,
+            "longitude": -119.63333333333334
+        },
+        {
+            "icao": "KBHX",
+            "latitude": 40.5,
+            "longitude": -124.3
+        },
+        {
+            "icao": "KNKX",
+            "latitude": 32.86666666666667,
+            "longitude": -117.13333333333334
+        },
+        {
+            "icao": "KSOX",
+            "latitude": 33.81666666666667,
+            "longitude": -117.63333333333334
+        },
+        {
+            "icao": "KVBX",
+            "latitude": 34.833333333333336,
+            "longitude": -120.4
+        },
+        {
+            "icao": "KDAX",
+            "latitude": 38.5,
+            "longitude": -121.68333333333334
+        },
+        {
+            "icao": "KMUX",
+            "latitude": 37.15,
+            "longitude": -121.9
+        },
+        {
+            "icao": "KVTX",
+            "latitude": 34.416666666666664,
+            "longitude": -119.18333333333334
+        },
+        {
+            "icao": "KRIX",
+            "latitude": 33.55,
+            "longitude": -117.43333333333334
+        },
+        {
+            "icao": "KFTG",
+            "latitude": 39.78333333333333,
+            "longitude": -104.55
+        },
+        {
+            "icao": "KGJX",
+            "latitude": 39.06666666666667,
+            "longitude": -108.21666666666667
+        },
+        {
+            "icao": "KPUX",
+            "latitude": 38.46666666666667,
+            "longitude": -104.18333333333334
+        },
+        {
+            "icao": "KDOX",
+            "latitude": 38.833333333333336,
+            "longitude": -75.43333333333334
+        },
+        {
+            "icao": "KEVX",
+            "latitude": 30.566666666666666,
+            "longitude": -85.91666666666667
+        },
+        {
+            "icao": "KJAX",
+            "latitude": 30.5,
+            "longitude": -81.68333333333334
+        },
+        {
+            "icao": "KBYX",
+            "latitude": 24.6,
+            "longitude": -81.7
+        },
+        {
+            "icao": "KMLB",
+            "latitude": 28.1,
+            "longitude": -80.65
+        },
+        {
+            "icao": "KAMX",
+            "latitude": 25.616666666666667,
+            "longitude": -80.41666666666667
+        },
+        {
+            "icao": "KTLH",
+            "latitude": 30.4,
+            "longitude": -84.35
+        },
+        {
+            "icao": "KTBW",
+            "latitude": 27.7,
+            "longitude": -82.4
+        },
+        {
+            "icao": "KVAX",
+            "latitude": 30.883333333333333,
+            "longitude": -83
+        },
+        {
+            "icao": "KFFC",
+            "latitude": 33.35,
+            "longitude": -84.56666666666666
+        },
+        {
+            "icao": "KJGX",
+            "latitude": 32.68333333333333,
+            "longitude": -83.35
+        },
+        {
+            "icao": "PHKM",
+            "latitude": 20.133333333333333,
+            "longitude": -155.78333333333333
+        },
+        {
+            "icao": "PHMO",
+            "latitude": 21.133333333333333,
+            "longitude": -157.18333333333334
+        },
+        {
+            "icao": "PHWA",
+            "latitude": 19.1,
+            "longitude": -155.56666666666666
+        },
+        {
+            "icao": "PHKI",
+            "latitude": 21.9,
+            "longitude": -159.55
+        },
+        {
+            "icao": "KDVN",
+            "latitude": 41.61666666666667,
+            "longitude": -90.58333333333333
+        },
+        {
+            "icao": "KDMX",
+            "latitude": 41.733333333333334,
+            "longitude": -93.71666666666667
+        },
+        {
+            "icao": "KCBX",
+            "latitude": 43.483333333333334,
+            "longitude": -116.23333333333333
+        },
+        {
+            "icao": "KSFX",
+            "latitude": 43.1,
+            "longitude": -112.68333333333334
+        },
+        {
+            "icao": "KILX",
+            "latitude": 40.15,
+            "longitude": -89.33333333333333
+        },
+        {
+            "icao": "KLOT",
+            "latitude": 41.6,
+            "longitude": -88.1
+        },
+        {
+            "icao": "KVWX",
+            "latitude": 38.266666666666666,
+            "longitude": -87.71666666666667
+        },
+        {
+            "icao": "KIND",
+            "latitude": 39.71666666666667,
+            "longitude": -86.3
+        },
+        {
+            "icao": "KIWX",
+            "latitude": 41.36666666666667,
+            "longitude": -85.7
+        },
+        {
+            "icao": "KTWX",
+            "latitude": 39,
+            "longitude": -96.23333333333333
+        },
+        {
+            "icao": "KDDC",
+            "latitude": 37.766666666666666,
+            "longitude": -99.96666666666667
+        },
+        {
+            "icao": "KGLD",
+            "latitude": 39.36666666666667,
+            "longitude": -101.7
+        },
+        {
+            "icao": "KICT",
+            "latitude": 37.65,
+            "longitude": -97.43333333333334
+        },
+        {
+            "icao": "KHPX",
+            "latitude": 36.733333333333334,
+            "longitude": -87.28333333333333
+        },
+        {
+            "icao": "KLVX",
+            "latitude": 37.983333333333334,
+            "longitude": -85.95
+        },
+        {
+            "icao": "KJKL",
+            "latitude": 37.6,
+            "longitude": -83.31666666666666
+        },
+        {
+            "icao": "KPAH",
+            "latitude": 37.06666666666667,
+            "longitude": -88.76666666666667
+        },
+        {
+            "icao": "KPOE",
+            "latitude": 31.05,
+            "longitude": -93.2
+        },
+        {
+            "icao": "KLCH",
+            "latitude": 30.133333333333333,
+            "longitude": -93.21666666666667
+        },
+        {
+            "icao": "KSHV",
+            "latitude": 32.45,
+            "longitude": -93.83333333333333
+        },
+        {
+            "icao": "KLIX",
+            "latitude": 30.333333333333332,
+            "longitude": -89.83333333333333
+        },
+        {
+            "icao": "KBOX",
+            "latitude": 41.95,
+            "longitude": -71.13333333333334
+        },
+        {
+            "icao": "KGYX",
+            "latitude": 43.88333333333333,
+            "longitude": -70.25
+        },
+        {
+            "icao": "KCBW",
+            "latitude": 46.03333333333333,
+            "longitude": -67.8
+        },
+        {
+            "icao": "KDTX",
+            "latitude": 42.7,
+            "longitude": -83.46666666666667
+        },
+        {
+            "icao": "KAPX",
+            "latitude": 44.9,
+            "longitude": -84.71666666666667
+        },
+        {
+            "icao": "KGRR",
+            "latitude": 42.88333333333333,
+            "longitude": -85.51666666666667
+        },
+        {
+            "icao": "KMQT",
+            "latitude": 46.53333333333333,
+            "longitude": -87.56666666666666
+        },
+        {
+            "icao": "KMPX",
+            "latitude": 44.85,
+            "longitude": -93.56666666666666
+        },
+        {
+            "icao": "KDLH",
+            "latitude": 46.85,
+            "longitude": -92.2
+        },
+        {
+            "icao": "KEAX",
+            "latitude": 38.81666666666667,
+            "longitude": -94.26666666666667
+        },
+        {
+            "icao": "KSGF",
+            "latitude": 37.233333333333334,
+            "longitude": -93.38333333333334
+        },
+        {
+            "icao": "KLSX",
+            "latitude": 38.7,
+            "longitude": -90.68333333333334
+        },
+        {
+            "icao": "KGWX",
+            "latitude": 33.9,
+            "longitude": -88.33333333333333
+        },
+        {
+            "icao": "KJAN",
+            "latitude": 32.31666666666667,
+            "longitude": -90.08333333333333
+        },
+        {
+            "icao": "KDGX",
+            "latitude": 32.28333333333333,
+            "longitude": -89.98333333333333
+        },
+        {
+            "icao": "KGGW",
+            "latitude": 48.21666666666667,
+            "longitude": -106.61666666666666
+        },
+        {
+            "icao": "KTFX",
+            "latitude": 47.46666666666667,
+            "longitude": -111.38333333333334
+        },
+        {
+            "icao": "KMSX",
+            "latitude": 47.03333333333333,
+            "longitude": -113.98333333333333
+        },
+        {
+            "icao": "KBLX",
+            "latitude": 45.85,
+            "longitude": -108.6
+        },
+        {
+            "icao": "KRAX",
+            "latitude": 35.666666666666664,
+            "longitude": -78.48333333333333
+        },
+        {
+            "icao": "KMHX",
+            "latitude": 34.766666666666666,
+            "longitude": -76.86666666666666
+        },
+        {
+            "icao": "KLTX",
+            "latitude": 33.983333333333334,
+            "longitude": -78.43333333333334
+        },
+        {
+            "icao": "KBIS",
+            "latitude": 46.766666666666666,
+            "longitude": -100.75
+        },
+        {
+            "icao": "KMVX",
+            "latitude": 47.53333333333333,
+            "longitude": -97.33333333333333
+        },
+        {
+            "icao": "KMBX",
+            "latitude": 48.4,
+            "longitude": -100.86666666666666
+        },
+        {
+            "icao": "KOAX",
+            "latitude": 41.31666666666667,
+            "longitude": -96.36666666666666
+        },
+        {
+            "icao": "KLNX",
+            "latitude": 41.95,
+            "longitude": -100.58333333333333
+        },
+        {
+            "icao": "KUEX",
+            "latitude": 40.31666666666667,
+            "longitude": -98.45
+        },
+        {
+            "icao": "KDIX",
+            "latitude": 39.95,
+            "longitude": -74.41666666666667
+        },
+        {
+            "icao": "KABX",
+            "latitude": 35.15,
+            "longitude": -106.81666666666666
+        },
+        {
+            "icao": "KFDX",
+            "latitude": 34.63333333333333,
+            "longitude": -103.61666666666666
+        },
+        {
+            "icao": "KEPZ",
+            "latitude": 31.866666666666667,
+            "longitude": -106.7
+        },
+        {
+            "icao": "KHDX",
+            "latitude": 33.083333333333336,
+            "longitude": -106.11666666666666
+        },
+        {
+            "icao": "KLRX",
+            "latitude": 40.733333333333334,
+            "longitude": -116.8
+        },
+        {
+            "icao": "KESX",
+            "latitude": 35.7,
+            "longitude": -114.88333333333334
+        },
+        {
+            "icao": "KRGX",
+            "latitude": 39.75,
+            "longitude": -119.46666666666667
+        },
+        {
+            "icao": "KENX",
+            "latitude": 42.583333333333336,
+            "longitude": -74.06666666666666
+        },
+        {
+            "icao": "KBGM",
+            "latitude": 42.21666666666667,
+            "longitude": -75.98333333333333
+        },
+        {
+            "icao": "KOKX",
+            "latitude": 40.86666666666667,
+            "longitude": -72.86666666666666
+        },
+        {
+            "icao": "KBUF",
+            "latitude": 42.93333333333333,
+            "longitude": -78.73333333333333
+        },
+        {
+            "icao": "KTYX",
+            "latitude": 43.75,
+            "longitude": -75.68333333333334
+        },
+        {
+            "icao": "KRMX",
+            "latitude": 43.46666666666667,
+            "longitude": -75.45
+        },
+        {
+            "icao": "KCLE",
+            "latitude": 41.416666666666664,
+            "longitude": -81.85
+        },
+        {
+            "icao": "KILN",
+            "latitude": 39.43333333333333,
+            "longitude": -83.8
+        },
+        {
+            "icao": "KFDR",
+            "latitude": 34.35,
+            "longitude": -98.98333333333333
+        },
+        {
+            "icao": "KINX",
+            "latitude": 36.18333333333333,
+            "longitude": -95.56666666666666
+        },
+        {
+            "icao": "    ",
+            "latitude": 35.68333333333333,
+            "longitude": -95.86666666666666
+        },
+        {
+            "icao": "    ",
+            "latitude": 34.96666666666667,
+            "longitude": -97.7
+        },
+        {
+            "icao": "KTLX",
+            "latitude": 35.333333333333336,
+            "longitude": -97.28333333333333
+        },
+        {
+            "icao": "KVNX",
+            "latitude": 36.733333333333334,
+            "longitude": -98.13333333333334
+        },
+        {
+            "icao": "KMAX",
+            "latitude": 42.083333333333336,
+            "longitude": -122.71666666666667
+        },
+        {
+            "icao": "KPDT",
+            "latitude": 45.7,
+            "longitude": -118.83333333333333
+        },
+        {
+            "icao": "KRTX",
+            "latitude": 45.71666666666667,
+            "longitude": -122.96666666666667
+        },
+        {
+            "icao": "KPBZ",
+            "latitude": 40.53333333333333,
+            "longitude": -80.21666666666667
+        },
+        {
+            "icao": "KCCX",
+            "latitude": 40.916666666666664,
+            "longitude": -78
+        },
+        {
+            "icao": "KCLX",
+            "latitude": 32.65,
+            "longitude": -81.05
+        },
+        {
+            "icao": "KCAE",
+            "latitude": 33.93333333333333,
+            "longitude": -81.11666666666666
+        },
+        {
+            "icao": "KGSP",
+            "latitude": 34.9,
+            "longitude": -82.21666666666667
+        },
+        {
+            "icao": "KABR",
+            "latitude": 45.45,
+            "longitude": -98.41666666666667
+        },
+        {
+            "icao": "KUDX",
+            "latitude": 44.13333333333333,
+            "longitude": -102.83333333333333
+        },
+        {
+            "icao": "KFSD",
+            "latitude": 43.583333333333336,
+            "longitude": -96.75
+        },
+        {
+            "icao": "KNQA",
+            "latitude": 35.35,
+            "longitude": -89.86666666666666
+        },
+        {
+            "icao": "KMRX",
+            "latitude": 36.166666666666664,
+            "longitude": -83.4
+        },
+        {
+            "icao": "KOHX",
+            "latitude": 36.25,
+            "longitude": -86.56666666666666
+        },
+        {
+            "icao": "KAMA",
+            "latitude": 35.21666666666667,
+            "longitude": -101.71666666666667
+        },
+        {
+            "icao": "KBRO",
+            "latitude": 25.916666666666668,
+            "longitude": -97.41666666666667
+        },
+        {
+            "icao": "KCRP",
+            "latitude": 27.766666666666666,
+            "longitude": -97.5
+        },
+        {
+            "icao": "KFWS",
+            "latitude": 32.56666666666667,
+            "longitude": -97.3
+        },
+        {
+            "icao": "KHGX",
+            "latitude": 29.466666666666665,
+            "longitude": -95.08333333333333
+        },
+        {
+            "icao": "    ",
+            "latitude": 30.716666666666665,
+            "longitude": -97.4
+        },
+        {
+            "icao": "KDFX",
+            "latitude": 29.266666666666666,
+            "longitude": -100.28333333333333
+        },
+        {
+            "icao": "KLBB",
+            "latitude": 33.666666666666664,
+            "longitude": -101.81666666666666
+        },
+        {
+            "icao": "KMAF",
+            "latitude": 31.95,
+            "longitude": -102.2
+        },
+        {
+            "icao": "KEWX",
+            "latitude": 29.7,
+            "longitude": -98.03333333333333
+        },
+        {
+            "icao": "KSJT",
+            "latitude": 31.366666666666667,
+            "longitude": -100.5
+        },
+        {
+            "icao": "KDYX",
+            "latitude": 32.53333333333333,
+            "longitude": -99.25
+        },
+        {
+            "icao": "KICX",
+            "latitude": 37.583333333333336,
+            "longitude": -112.86666666666666
+        },
+        {
+            "icao": "KMTX",
+            "latitude": 41.266666666666666,
+            "longitude": -112.45
+        },
+        {
+            "icao": "KAKQ",
+            "latitude": 36.983333333333334,
+            "longitude": -77
+        },
+        {
+            "icao": "KFCX",
+            "latitude": 37.016666666666666,
+            "longitude": -80.26666666666667
+        },
+        {
+            "icao": "KLWX",
+            "latitude": 38.983333333333334,
+            "longitude": -77.48333333333333
+        },
+        {
+            "icao": "KCXX",
+            "latitude": 44.516666666666666,
+            "longitude": -73.16666666666667
+        },
+        {
+            "icao": "KLGX",
+            "latitude": 47.11666666666667,
+            "longitude": -124.1
+        },
+        {
+            "icao": "KATX",
+            "latitude": 48.2,
+            "longitude": -122.5
+        },
+        {
+            "icao": "KOTX",
+            "latitude": 47.68333333333333,
+            "longitude": -117.63333333333334
+        },
+        {
+            "icao": "KGRB",
+            "latitude": 44.483333333333334,
+            "longitude": -88.13333333333334
+        },
+        {
+            "icao": "KARX",
+            "latitude": 43.81666666666667,
+            "longitude": -91.18333333333334
+        },
+        {
+            "icao": "KMKX",
+            "latitude": 42.96666666666667,
+            "longitude": -88.55
+        },
+        {
+            "icao": "KRLX",
+            "latitude": 38.31666666666667,
+            "longitude": -81.71666666666667
+        },
+        {
+            "icao": "KCYS",
+            "latitude": 41.15,
+            "longitude": -104.8
+        },
+        {
+            "icao": "KRIW",
+            "latitude": 43.06666666666667,
+            "longitude": -108.46666666666667
+        },
+        {
+            "icao": "PGUA",
+            "latitude": 13.566666666666666,
+            "longitude": 144.91666666666666
+        },
+        {
+            "icao": "TJUA",
+            "latitude": 18.116666666666667,
+            "longitude": -66.08333333333333
+        },
+        {
+            "icao": "TJSJ",
+            "latitude": 18.43917,
+            "longitude": -66.001833
+        },
+        {
+            "icao": "RKJK",
+            "latitude": 35.903756,
+            "longitude": 126.615906
+        },
+        {
+            "icao": "RKSG",
+            "latitude": 36.9666666,
+            "longitude": 127.0333333
+        },
+        {
+            "icao": "RODN",
+            "latitude": 26.355612,
+            "longitude": 127.767633
+        }
+    ];
+});

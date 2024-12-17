@@ -1,0 +1,145 @@
+define([
+	'jquery',
+    'handlebars',
+    'domReady!'
+], function() {
+    'use strict';
+
+    var module = {};
+
+    module.AjaxManager = function(spec) {
+		var that = {};
+
+		spec = spec || {};
+		spec.loadQueue = [];
+		spec.maxRequests = spec.maxRequests || 4;
+		spec.active = spec.active || false;
+
+		spec.activeRequests = 0;
+
+		var doneLoading = function() {
+			spec.activeRequests--;
+			runLoadQueue();
+		}
+
+		var runLoadQueue = function() {
+			if (spec.active && spec.loadQueue.length > 0 && spec.activeRequests < spec.maxRequests) {
+				spec.activeRequests++;
+
+				var currentRequest = spec.loadQueue.shift();
+				currentRequest.addCallback("complete", doneLoading);
+				currentRequest.load();
+
+				// We may be able to load another product at the same time. Try.
+				runLoadQueue();
+			}
+		}
+
+		that.enqueue = function(ajaxRequest) {
+			if (!ajaxRequest.isNullRequest()) {
+				spec.loadQueue.push(ajaxRequest);
+			}
+
+			runLoadQueue();
+		} 
+
+		that.enable = function() {
+			spec.active = true;
+			runLoadQueue();
+		}
+
+		return that;
+	}
+
+	module.NullRequest = function(spec) {
+		var that = {};
+
+		spec = spec || {};
+		spec.url = spec.url || null;
+		spec.error = spec.error ? [spec.error] : [];
+		spec.success = spec.success ? [spec.success] : [];
+		spec.complete = spec.complete ? [spec.complete] : [];
+
+		that.addCallback = function(onWhat, callbackFunction) {
+			if ($.inArray(onWhat, ["error", "success", "complete"]) != -1) {
+				spec[onWhat].push(callbackFunction);
+			} else {
+				throw "Error: can only add error, success, or complete callbacks!";
+			}
+		}
+
+		that.load = function() {
+			$.each(spec.success.concat(spec.complete), function(idx, func) {
+				func();
+			});
+		}
+
+		that.isNullRequest = function() {
+			return true;
+		}
+
+		return that;
+	}
+
+	module.AjaxRequest = function(spec) {
+		spec = spec || {};
+
+		// "Inherits" from AjaxRequest
+		var that = module.NullRequest(spec);
+
+		that.load = function() {
+			$.ajax({url:spec.url, success: spec.success, error: spec.error, complete: spec.complete});
+		}
+
+		that.isNullRequest = function() {
+			return false;
+		}
+
+		return that;
+	}
+
+	// This is done for IR and Radar leaflet widgets needing all requests to act as ajax.
+	// Added temporarily for Google Earth removal.
+    module.FakeAjaxLoadRequest = function(spec) {
+        spec = spec || {};
+
+        // "Inherits" from AjaxRequest
+        var that = module.NullRequest(spec);
+
+        that.load = function() {
+            spec.success[0]()
+        }
+
+        that.isNullRequest = function() {
+            return false;
+        }
+
+        return that;
+    }
+
+	module.ImageRequest = function(spec) {
+		spec = spec || {};
+
+		// "Inherits" from AjaxRequest
+		var that = module.AjaxRequest(spec);
+
+		that.load = function() {
+			var loadingImage = $("<img/>");
+
+			$.each(spec.success.concat(spec.complete), function(idx, func) {
+				loadingImage.on("load", func);
+			});
+
+			$.each(spec.error.concat(spec.complete), function(idx, func) {
+				loadingImage.on("error", func);
+			});
+
+			loadingImage.attr("src", spec.url);
+		}
+
+		return that;
+	}
+
+	return module;
+	
+});

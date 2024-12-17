@@ -1,0 +1,154 @@
+ var navigationFooterFallbackPath = '/AFW_WEBS/NavigationFooter/AFWWEBSLITE',
+    require = {
+        baseUrl: '/AFW_WEBS/',
+        paths: {
+            //External libraries
+            amCharts: 'js/amcharts-3.4.5/amcharts/serial',
+            amChartsCore: 'js/amcharts-3.4.5/amcharts/amcharts',
+
+            amStock: 'js/amstockchart-3.4.5/amcharts/amstock',
+            amStockSource: 'js/amstockchart-3.4.5/sources/amcharts/stock/AmStockChart',
+
+            amChartsExport: 'js/amcharts-3.4.5/amcharts/exporting/amexport',
+            amChartsRGBColor: 'js/amcharts-3.4.5/amcharts/exporting/rgbcolor',
+            amChartsCanvasG: 'js/amcharts-3.4.5/amcharts/exporting/canvg',
+            amChartsFileSaver: 'js/amcharts-3.4.5/amcharts/exporting/filesaver',
+
+            fancybox: 'js/fancyapps-fancyBox-18d1712/source/jquery.fancybox.pack',
+            fancyboxCss : 'js/fancyapps-fancyBox-18d1712/source/jquery.fancybox',
+
+            handlebars: 'js/handlebars-1.3.0/handlebars',
+
+            highCharts: 'js/highcharts/highcharts',
+            highChartsMore: 'js/highcharts/highcharts-more',
+
+            jscolor: 'js/jscolor/jscolor',
+
+            jquery: 'js/jquery-1.8.3.min',
+            jqueryXml2Json: 'js/xml2json-1.3/jQuery.xml2json',
+
+            jqueryui: 'js/jquery-ui-1.10.2.custom.min',
+            jqueryuiCss: 'js/themes/smoothness/jquery-ui-1.10.2.custom.min',
+            jqueryuiEditable: 'js/jquery-ui-editable-1.5.1/js/jquery-ui-editable.min',
+            jqueryuiEditableCss: 'js/jquery-ui-editable-1.5.1/css/jquery-ui-editable',
+
+            rbush:'js/rbush/rbush',
+
+            messageManager: 'js/MessageManager',
+
+            leaflet: 'js/leaflet-1.0.3/leaflet',
+            leafletCss: 'js/leaflet-1.0.3/leaflet',
+
+            lodash: 'js/lodash-2.4.1/lodash.min',
+
+            moment: 'js/moment/moment.min-2.7.0',
+
+            select2: 'js/select2-3.4.5/select2.min',
+            select2Css: 'js/select2-3.4.5/select2',
+
+            //AFWWEBS libraries
+            afwIcaoSearch: 'tactical/js/afwIcaoSearch',
+            afwCapabilitiesManager: 'tactical/js/afwCapabilitiesManager',
+            afwIcaoManager: 'tactical/js/afwIcaoManager',
+            afwLayerManager: 'tactical/js/afwLayerManager',
+            afwLayerManagerCss: 'tactical/css/afwLayerManager',
+            afwLayerManagerLayerListItemHbs: 'tactical/templates/layerListItem.hbs',
+            afwLayerManagerContainerHbs: 'tactical/templates/layerManagerContainer.hbs',
+            afwMap: 'tactical/js/afwMap',
+            afwPointProductDisplay: 'tactical/js/afwPointProductDisplay',
+            afwPointProductDisplayCss: 'tactical/css/afwPointProductDisplay',
+            afwLayerTree: 'tactical/js/afwLayerTree',
+            afwLayerTreeCss: 'tactical/css/afwLayerTree',
+            afwUtil: 'js/afwUtil',
+            tacticalImageProductHbs: 'tactical/templates/imageProduct.hbs',
+            tacticalPointProductHbs: 'tactical/templates/pointProduct.hbs',
+            activeVolcanoesHbs: 'VolcanicEvents/templates/activeVolcanoes.hbs',
+            hypotheticalVolcanoesHbs: 'VolcanicEvents/templates/hypotheticalVolcanoes.hbs',
+            swfobject: 'js_files/swfobject',
+
+            //requirejs plugins
+            css: 'js/require-2.1.10/plugins/css-0.1.2',
+            domReady: 'js/require-2.1.10/plugins/domReady-2.0.1',
+            text: 'js/require-2.1.10/plugins/text-2.0.10',
+
+            // NavigationFooter theme dependencies
+            navigationFooterTheme: [navigationFooterFallbackPath + '/custom'], //Must be included on every page with the NavigationFooter theme
+            navigationFooterThemeCss: [navigationFooterFallbackPath + '/style'],
+            navigationFooterEasing: [navigationFooterFallbackPath + '/easing'],
+            navigationFooterHoverIntent: ['js_files/hoverIntent'],
+            navigationFooterJqueryScrollTo: ['js/jquery.scrollTo-1.4.2-min'],
+            navigationFooterSuperFish: ['js_files/superfish'],
+            navigationFooterSuperFishCss: ['styles/superfish'] ,
+            navigationFooterSuperSubs: ['js_files/supersubs'],
+            navigationFooterTabs: [navigationFooterFallbackPath + '/tabs'],
+            navigationFooterTabsCss: [navigationFooterFallbackPath + '/tabs']
+        },
+        shim: {
+            //External libraries
+            amCharts: {
+                deps: ['amChartsCore']
+            },
+            amChartsExport: {
+                deps: ['amCharts', 'amChartsRGBColor', 'amChartsCanvasG', 'amChartsFileSaver']
+            },
+            amChartsFileSaver: {
+                deps: ['amCharts']
+            },
+            amStock: {
+                deps: ['amCharts']
+            },
+            fancybox : {
+                deps: ['jquery', 'css!fancyboxCss']
+            },
+            jqueryXml2Json: {
+                deps: ['jquery']
+            },
+            jqueryui: {
+                deps: ['jquery', 'css!jqueryuiCss']
+            },
+            jqueryuiEditable: {
+                deps: ['jquery', 'jqueryui', 'css!jqueryuiEditableCss']
+            },
+            messageManager: {
+                deps: ['jquery']
+            },
+            leaflet: {
+                deps: ['css!leafletCss']
+            },
+            select2: {
+                deps: ['jquery', 'jqueryui', 'css!select2Css']
+            },
+
+            // NavigationFooter theme dependencies
+            navigationFooterTheme: {
+                deps: [
+                    'jquery',
+                    'css!navigationFooterThemeCss',
+                    'navigationFooterEasing',
+                    'navigationFooterJqueryScrollTo',
+                    'navigationFooterTabs',
+                    'navigationFooterHoverIntent',
+                    'navigationFooterSuperFish',
+                    'navigationFooterSuperSubs'
+                ]
+            },
+            navigationFooterEasing: {
+                deps: ['jquery']
+            },
+            navigationFooterHoverIntent: {
+                deps: ['jquery']
+            },
+            navigationFooterJqueryScrollTo: {
+                deps: ['jquery']
+            },
+            navigationFooterSuperFish: {
+                deps: ['jquery', 'css!navigationFooterSuperFishCss']
+            },
+            navigationFooterSuperSubs: {
+                deps: ['jquery']
+            },
+            navigationFooterTabs: {
+                deps: ['jquery', 'css!navigationFooterTabsCss']
+            }
+        }
+    };

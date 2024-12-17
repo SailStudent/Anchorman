@@ -1,0 +1,492 @@
+
+define([
+    './requests.js',
+    './templates.js',
+    './nexrad.js',
+    './oconus_nexrad.js',
+    './model_bounds.js',
+    'leaflet',
+    'handlebars',
+    'domReady!'
+], function(requests,
+            templates,
+            nexrad,
+            oconus_nexrad,
+            model_bounds,
+            L) {
+
+    'use strict';
+
+    var module = {};
+
+    module.BaseWidget = function(spec) {
+        var that = {};
+
+        spec = spec || {};
+        spec.anchor = spec.anchorName ? $("<a id='" + spec.anchorName + "' name='" + spec.anchorName + "'/>") : $("<a/>");
+        spec.product = spec.product || {};
+        spec.location = spec.location || {};
+        spec.request = spec.request || null;
+
+        spec.makeContainerDiv = function() {
+            return $("<div class='point_widget'/>");
+        };
+
+        that.div = function() {
+            return spec.div;
+        };
+
+        that.title = function() {
+            return spec.product.title;
+        };
+
+        that.navtitle = function() {
+            return spec.product.navtitle;
+        };
+
+        return that;
+    };
+
+    module.AjaxWidget = function(spec) {
+        spec = spec || {};
+
+        // "Inherits" from BaseWidget
+        var that = module.BaseWidget(spec);
+
+        spec.request = spec.request || null;
+        spec.container = $(templates.LoadingTemplate({title: spec.product.title}));
+        spec.div = spec.makeContainerDiv().append(spec.anchor).append(spec.container);
+
+        spec.onLoad = function(data) {
+            try {
+                spec.container.html(data);
+            } catch (err) {
+                spec.onError();
+                return;
+            }
+        };
+            // Stop the Boomerang timer, and let Boomerang know you're done with it so it sends the beacon to the log
+            BOOMR.plugins.RT.endTimer("t_" + spec.product.title);
+            BOOMR.plugins.RT.done();
+
+        spec.onError = function() {
+            spec.container.html(templates.ErrorTemplate({title: spec.product.title, message: "Request failed."}));
+            // Stop the Boomerang timer, and let Boomerang know you're done with it so it sends the beacon to the log
+            BOOMR.plugins.RT.endTimer("t_" + spec.product.title);
+
+        };
+
+        spec.getURLParams = function() {
+            var productParams = $.extend({}, spec.product.parameters);
+
+            if ('locationParameter' in spec.product) {
+                productParams[spec.product['locationParameter']] = spec.location.icao;
+            } else {
+                productParams["LOC"] = spec.location.icao;
+            }
+
+            return productParams;
+        };
+
+        spec.getURL = function() {
+            var urlParams = spec.getURLParams();
+
+            return spec.product.url + "?" + $.param(urlParams);
+        };
+
+        that.request = function() {
+            // Start a timer to measure load time, and use the widget title to give it a dynamically generated, unique ID
+            BOOMR.plugins.RT.startTimer("t_" + spec.product.title);
+            BOOMR.plugins.RT.done();
+
+            if (spec.request === null) {
+                spec.request = requests.AjaxRequest({url: spec.getURL(), success: spec.onLoad, error: spec.onError});
+            }
+
+            return spec.request;
+        };
+
+        return that;
+    };
+
+    module.SolarWidget = function(spec) {
+        spec = spec || {};
+
+        var that = module.AjaxWidget(spec);
+
+        spec.getURLParams = function() {
+            var productParams = $.extend({}, spec.product.parameters);
+
+            productParams["VIEW"] = "WIDGET";
+            productParams["DURATION"] = "3";
+            productParams["LOC"] = spec.location.latitude + "," + spec.location.longitude;
+
+            return productParams;
+        };
+
+        return that;
+    };
+
+    module.PEPWidget = function(spec) {
+        spec = spec || {};
+
+        var that = module.AjaxWidget(spec);
+
+        spec.getURLParams = function() {
+            var productParams = $.extend({}, spec.product.parameters);
+
+            if ("icao" in spec.location && spec.location.icao) {
+                productParams["DATAINPUTS"] = "model_id=GEPS;LOC=" + spec.location.icao + ";VIEW=WIDGET";
+            } else {
+                productParams["DATAINPUTS"] = "model_id=GEPS;LOC=" + spec.location.latitude + "," + spec.location.longitude + ";VIEW=WIDGET";
+            }
+
+            return productParams;
+        };
+
+        return that;
+    };
+
+    module.PointForecastWidget = function(spec) {
+        spec = spec || {};
+
+        var that = module.AjaxWidget(spec);
+
+        spec.getURLParams = function() {
+            var productParams = $.extend({}, spec.product.parameters);
+
+            if ("icao" in spec.location && spec.location.icao) {
+                productParams["LOC"] = spec.location.icao;
+            } else if ("place_id" in spec.location && spec.location.place_id) {
+                productParams["PLACEID"] = spec.location.place_id;
+            } else {
+                productParams["LOC"] = Math.round(spec.location.latitude*10000)/10000 + "," + Math.round(spec.location.longitude*10000)/10000;
+            }
+
+            return productParams;
+        };
+
+        return that;
+    };
+
+    module.LeafletWidget = function(spec) {
+        spec = spec || {};
+
+        // "Inherits" from AjaxWidget
+        var that = module.AjaxWidget(spec);
+
+        spec.addWMSLayersToMap = function(map) {
+            var url = spec.product.wms.URL;
+            var layers = spec.product.wms.PARAMETERS.LAYERS;
+            var styles = spec.product.wms.PARAMETERS.STYLES;
+            var format = spec.product.wms.PARAMETERS.FORMAT;
+            var transparent = spec.product.wms.PARAMETERS.TRANSPARENT;
+            var version = spec.product.wms.PARAMETERS.VERSION;
+            L.tileLayer.wms(url, { layers: layers, styles: styles, format: format, transparent: transparent, version: version }).addTo(map);
+        };
+
+        spec.createKML = function(location) {
+            var kml = '<?xml version="1.0" encoding="UTF-8"?>';
+            kml += '<kml xmlns="http://www.opengis.net/kml/2.2">';
+            kml += '<Document>';
+            kml += '<Placemark>';
+            kml += '<name>' + location.icao + '</name>';
+            kml += '<description><![CDATA[' + location.icao + ']]></description>';
+            kml += '<Point>';
+            kml += '<coordinates>' + location.longitude + ',' + location.latitude + '</coordinates>';
+            kml += '</Point>';
+            kml += '<ExtendedData>';
+            kml += '<Data name="icao"><value>' + location.icao + '</value></Data>';
+            kml += '</ExtendedData>';
+            kml += '</Placemark>';
+            kml += '</Document>';
+            kml += '</kml>';
+            return kml;
+        };
+
+        spec.addStationLayerToMap = function(map) {
+            var stationLabel = "";
+            if(spec.location.icao || spec.location.wmo_id || spec.location.iata){
+                var stationID = spec.location.icao || spec.location.wmo_id || spec.location.iata;
+                stationLabel = "\<h2>" + stationID + "\</h2>" + spec.location.long_name;
+            } else {
+                stationLabel = 'LAT '+[spec.location.latitude]+" LON " + [spec.location.longitude];
+            }
+            var myIcon = L.icon({
+                className: 'markerOffset',
+                iconUrl: '../js/leaflet-1.0.3/images/marker-icon.png',
+                iconRetinaUrl: '../js/leaflet-1.0.3/images/marker-icon-2x.png',
+                shadowUrl: '../js/leaflet-1.0.3/images/marker-shadow.png'
+            });
+            L.marker([spec.location.latitude, spec.location.longitude], {icon: myIcon}).addTo(map).bindPopup(stationLabel);
+        };
+
+        spec.onLoad = function(data) {
+            // Stop the Boomerang timer, and let Boomerang know you're done with it so it sends the beacon to the log
+            BOOMR.plugins.RT.endTimer("t_" + spec.product.title);
+            BOOMR.plugins.RT.done();
+
+            var urlParams = spec.getURLParams();
+            urlParams["FORMAT"] = "image/png";
+            var looperUrl = "/AFW_WEBS/LowBandwidth/looper.php?" + $.param(urlParams);
+
+            //Formats coordinates up to nearest 1/1000
+            var locstring = Math.round(spec.location.latitude * 10000)/10000 + ", " + Math.round(spec.location.longitude * 10000)/10000;
+            var container = spec.getTemplate(spec.product.title, locstring, looperUrl);
+
+            spec.container.empty();
+            spec.container.append(container);
+
+            // Add map to page
+            var location = spec.radar_location || spec.location;
+            //Change the CRS to use square tiling instead of rectangular
+            L.CRS.EPSG4326.transformation = new L.Transformation(1 / 360, 0.5, -1 / 360, 0.5);
+            var map = L.map(spec.product.widgetName, {center: new L.LatLng(location.latitude, location.longitude), zoom: spec.product.zoom, crs: L.CRS.EPSG4326, zoomControl: false, attributionControl: false});
+            map.dragging.disable();
+            map.touchZoom.disable();
+            map.doubleClickZoom.disable();
+            map.scrollWheelZoom.disable();
+            map.boxZoom.disable();
+            map.keyboard.disable();
+
+            spec.addWMSLayersToMap(map);
+            spec.addStationLayerToMap(map);
+
+            // Add legend to page
+            var url = spec.product.wms.URL;
+            var layers = spec.wms_layers || spec.product.wms.PARAMETERS.LAYERS;
+            var styles = spec.product.wms.PARAMETERS.STYLES;
+            var format = "image/product";
+            var version = spec.product.wms.PARAMETERS.VERSION;
+            url += "?REQUEST=GetMap&SERVICE=WMS&CRS=CRS:84&BBOX=-1,-1,1,1&HEIGHT=1" +
+                "&WIDTH="   + container.width() +
+                "&VERSION=" + version +
+                "&FORMAT="  + format +
+                "&LAYERS="  + layers +
+                "&STYLES="  + styles;
+            var legend = $('<img src="' + encodeURI(url) + '" alt="Legend" />');
+            container.find('#' + spec.product.legendName).append(legend);
+        };
+
+        spec.getURLParams = function() {
+            var productParams = {};
+            productParams['REQUEST'] = spec.product.wms.PARAMETERS.REQUEST;
+            productParams['SERVICE'] = spec.product.wms.PARAMETERS.SERVICE;
+            productParams['VERSION'] = spec.product.wms.PARAMETERS.VERSION;
+            productParams['CRS'] = spec.product.wms.PARAMETERS.CRS;
+            productParams['LAYERS'] = spec.wms_layers ? spec.wms_layers : spec.product.wms.PARAMETERS.LAYERS;
+            productParams['STYLES'] = spec.product.wms.PARAMETERS.STYLES;
+            productParams['FORMAT'] = spec.product.wms.PARAMETERS.FORMAT;
+            productParams['TRANSPARENT'] = spec.product.wms.PARAMETERS.TRANSPARENT;
+            productParams['WIDTH'] = spec.product.width;
+            productParams['HEIGHT'] = spec.product.height;
+
+            // "Length of 1 degree of Longitude = cosine (latitude) * length of degree (miles) at equator"
+            // Close enough for bounding boxes
+            // sw lon, sw lat, ne lon, ne lat
+            var latitudeOffset = spec.product.bboxSize / 60;
+            var longitudeOffset = spec.product.bboxSize / (60*Math.cos(spec.location.latitude * (Math.PI/180)));
+
+            var swLon = spec.location.longitude - longitudeOffset;
+            var swLat = spec.location.latitude - latitudeOffset;
+            var neLon = spec.location.longitude + longitudeOffset;
+            var neLat = spec.location.latitude + latitudeOffset;
+
+            productParams["BBOX"] = swLon + "," + swLat + "," + neLon + "," + neLat;
+
+            return productParams;
+        };
+
+        that.request = function() {
+            // Start a timer to measure load time, and use the widget title to give it a dynamically generated, unique ID
+            BOOMR.plugins.RT.startTimer("t_" + spec.product.title);
+            if (spec.request === null) {
+                spec.request = requests.FakeAjaxLoadRequest({success: spec.onLoad, error: spec.onError});
+            }
+
+            return spec.request;
+        };
+
+        return that;
+    };
+
+    module.RadarWidget = function(spec) {
+        spec = spec || {};
+
+        // "Inherits" from BaseWidget
+        var that = module.LeafletWidget(spec);
+
+        spec.addWMSLayersToMap = function(map) {
+            var url = spec.product.wms.URL;
+            var layers = spec.wms_layers;
+            var styles = spec.product.wms.PARAMETERS.STYLES;
+            var format = spec.product.wms.PARAMETERS.FORMAT;
+            var transparent = spec.product.wms.PARAMETERS.TRANSPARENT;
+            var version = spec.product.wms.PARAMETERS.VERSION;
+            L.tileLayer.wms(url, { layers: layers, styles: styles, format: format, transparent: transparent, version: version }).addTo(map);
+        };
+
+        spec.getTemplate = function(title, locstring, looperUrl) {
+            return $(templates.RadarTemplate({title: title, location: locstring, looper_url: looperUrl}));
+        };
+
+        var haversineDistance = function(location1, location2) {
+            var earthRadius = 3959;
+            var lat1 = location1.latitude * Math.PI / 180;
+            var lon1 = location1.longitude * Math.PI / 180;
+            var lat2 = location2.latitude * Math.PI / 180;
+            var lon2 = location2.longitude * Math.PI / 180;
+
+            var dLat = lat2-lat1;
+            var dLon = lon2-lon1;
+            var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon/2) * Math.sin(dLon/2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            var d = earthRadius * c;
+
+            return d;
+        };
+
+        var getBestRadar = function(radars) {
+            var bestRadar = null;
+            var bestDist = null;
+
+            for (var x=0; x<radars.length;x++) {
+                var dist = haversineDistance(spec.location, radars[x]);
+
+                if (bestDist === null || dist < bestDist) {
+                    bestDist = dist;
+                    bestRadar = radars[x];
+                }
+
+            }
+
+            return bestRadar;
+        };
+
+        var containsPoint = function(point, bounds) {
+            return (point['latitude'] > bounds['y-min'] && point['latitude'] < bounds['y-max'] && point['longitude'] > bounds['x-min'] && point['longitude'] < bounds['x-max']);
+        };
+
+        var bestRadar = getBestRadar(nexrad);
+        var bestDist = haversineDistance(spec.location, bestRadar);
+        var containsOConusRadar = function(oconus_sites, radar) {
+            for (var i = 0; i < oconus_sites.length; i++) {
+                if (oconus_sites[i]['icao'] === radar['icao']) {
+                    return true;
+                }
+            }
+            return false;
+        };
+
+        // If we don't have a radar close by, this will render an error template and issue a null request
+        if (bestDist < spec.product.bboxSize) {
+            if (containsOConusRadar(oconus_nexrad, bestRadar)) {
+                spec.wms_layers = spec.product.wms.PARAMETERS.OCONUS_LAYERS;
+            } else {
+                spec.wms_layers = spec.product.wms.PARAMETERS.CONUS_LAYERS;
+            }
+            spec.radar_location = bestRadar;
+        } else if (containsPoint(spec['location'], model_bounds['European Rain Rate'])) {
+            spec.wms_layers = spec.product.wms.PARAMETERS.EURO_RADARS;
+            spec.radar_location = null;
+        } else {
+            that.request = function() {
+                return requests.NullRequest();
+            };
+
+            spec.container = $(templates.ErrorTemplate({title: spec.product.title, message: "No radar station within range."}));
+            spec.div = spec.makeContainerDiv().append(spec.anchor).append(spec.container);
+
+        }
+
+        return that;
+    };
+
+    module.IRWidget = function(spec) {
+        spec = spec || {};
+
+        // "Inherits" from BaseWidget
+        var that = module.LeafletWidget(spec);
+
+        spec.getTemplate = function(title, locstring, looperUrl) {
+            return $(templates.IRTemplate({title: title, location: locstring, looper_url: looperUrl}));
+        };
+
+        return that;
+    };
+
+    module.PreloadedDataWidget = function(spec) {
+        spec = spec || {};
+
+        // "Inherits" from Widget
+        var that = module.BaseWidget(spec);
+
+        that.request = function() {
+            if (spec.request === null) {
+                spec.request = requests.NullRequest();
+            }
+
+            return spec.request;
+        };
+
+        return that;
+    };
+
+    module.METARWidget = function(spec) {
+        spec = spec || {};
+
+        // "Inherits" from PreloadedDataWidget
+        var that = module.PreloadedDataWidget(spec);
+
+        if (!("icao" in spec.location) || !spec.location.icao) {
+            spec.container = $(templates.ErrorTemplate({title: "Current Conditions", message: "METARs are only available for ICAO locations"}));
+        } else if (!("metars" in spec.preloadedData) || spec.preloadedData.metars.length === 0) {
+            spec.container = $(templates.ErrorTemplate({title: "Current Conditions", message: "No METAR is currently available for this location"}));
+        } else {
+            var metarData = {
+                metar: spec.preloadedData.metars[0],
+                station: spec.preloadedData.station_info.long_name
+            };
+
+            spec.container = $(templates.METARTemplate(metarData));
+        }
+
+        spec.div = spec.makeContainerDiv().append(spec.anchor).append(spec.container);
+
+        return that;
+    };
+
+    module.TAFWidget = function(spec) {
+        spec = spec || {};
+
+        // "Inherits" from PreloadedDataWidget
+        var that = module.PreloadedDataWidget(spec);
+
+        if (!("icao" in spec.location) || !spec.location.icao) {
+            spec.container = $(templates.ErrorTemplate({title: "Airfield Forecast", message: "TAFs are only available for ICAO locations"}));
+        } else if (!("tafs" in spec.preloadedData) || spec.preloadedData.tafs.length === 0) {
+            spec.container = $(templates.ErrorTemplate({title: "Airfield Forecast", message: "No TAFs are currently available for this location"}));
+        } else {
+            spec.container = $(templates.TAFTemplate({tafLines: spec.preloadedData.tafs[0].groups}));
+        }
+
+        spec.div = spec.makeContainerDiv().append(spec.anchor).append(spec.container);
+
+        return that;
+    };
+
+    module.StationWidget = function(spec) {
+        spec = spec || {};
+
+        // "Inherits" from PreloadedDataWidget
+        var that = module.PreloadedDataWidget(spec);
+
+        spec.container = $(templates.StationInfoTemplate({location: spec.location}));
+
+        spec.div = spec.makeContainerDiv().append(spec.anchor).append(spec.container);
+
+        return that;
+    };
+
+    return module;
+});

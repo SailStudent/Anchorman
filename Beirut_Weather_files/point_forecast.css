@@ -1,0 +1,236 @@
+caption {
+    caption-side: bottom;
+}
+
+tr.bottomborder td {
+    border-bottom: 1px solid #7d7d7d;
+}
+
+tr.outlook_row td {
+    width: 100%;
+}
+
+.container {
+    margin: 0 auto;
+    border: 2px solid #000;
+}
+
+.leftside {
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    color: #000;
+    background-color: #a4c5e8;
+    padding: 5px;
+    vertical-align: middle;
+    border-right: 2px solid #7d7d7d;
+}
+
+.search {
+    text-align: center;
+}
+
+.table_subheader_lg {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #2f3c86;
+    padding: 1px 3px 1px 6px;
+}
+
+.table_subheader_med {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 11px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #2f3c86;
+    padding: 1px 3px 1px 6px;
+}
+
+.table_subheader_sm {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #5966ac;
+    padding: 1px 3px 1px 6px;
+}
+
+.taf {
+    vertical-align: top;
+    font-size: 12px;
+    color: #000;
+    background-color: #a4Cce8;
+    padding: 1px 3px 1px 6px;
+}
+
+.taf_line {
+    white-space: pre;
+    display: block;
+}
+
+.test {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 13px;
+    color: #000;
+    padding: 2px 2px 2px 3px;
+}
+
+.test2 {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 12px;
+    color: black;
+    background-color: #a4c5e8;
+    padding: 2px 2px 2px 3px;
+}
+
+.label {
+    font-size: 10px;
+    padding: 0;
+}
+
+.time {
+    font-size: 10px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.wx_width {
+    width: 100px;
+}
+
+.small_text {
+    font-size: 10px;
+}
+
+.highlight {
+    -webkit-transition: box-shadow linear 1s;
+    transition: box-shadow linear 1s;
+}
+
+div.shadow {
+    -moz-box-shadow: 0 0 5px 5px orange;
+    -webkit-box-shadow: 0 0 5px 5px orange;
+    box-shadow: 0 0 5px 5px orange;
+}
+
+img.center {
+    vertical-align: middle;
+    height: 15px;
+    width: 15px;
+
+}
+
+td.shadow {
+    -moz-box-shadow: inset 0 0 5px 5px orange;
+    -webkit-box-shadow: inset 0 0 5px 5px orange;
+    box-shadow: inset 0 0 5px 5px orange;
+}
+
+td.test, td.test2 {
+    border-right: 1px solid #7d7d7d;
+}
+
+td.test:last-child {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+td.test2:last-child {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+select {
+    height: 29px;
+    padding: 3px;
+    margin: 3px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    background: #f8f8f8;
+    color: #888;
+    border: none;
+    outline: none;
+    display: inline-block;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    margin-bottom: 0px;
+}
+
+.dropdown {
+    position: relative
+}
+
+.dropdown:after {
+    content: '<>';
+    font: 11px "Consolas", monospace;
+    color: #aaa;
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+    right: 8px;
+    top: 2px;
+    padding: 0 0 2px;
+    border-bottom: 1px solid #ddd;
+    position: absolute;
+    pointer-events: none;
+}
+
+.dropdown:before {
+    content: '';
+    right: 6px;
+    top: 0px;
+    width: 20px;
+    height: 20px;
+    background: #f8f8f8;
+    position: absolute;
+    pointer-events: none;
+    display: block;
+}
+
+#redirectPlainTextButton {
+    height: 30px;
+    width: 30px;
+    padding: 3px;
+    padding-top: 3px;
+    vertical-align: bottom;
+}
+
+#playicon {
+    height: 20px;
+    width: 20px;
+}
+
+#forecast_title.shadow {
+    -moz-box-shadow: inset 0 0 5px 5px orange;
+    -webkit-box-shadow: inset 0 0 5px 5px orange;
+    box-shadow: inset 0 0 5px 5px orange;
+}
+
+#forecast_div {
+    font-size: 10px;
+    overflow: auto;
+    width: inherit;
+}
+
+#forecast_label {
+    background-color: transparent;
+}
+
+#mboClassificationHeader, #mboClassificationFooter, #mboTitle {
+    display: none;
+}

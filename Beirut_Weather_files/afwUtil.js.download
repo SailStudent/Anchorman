@@ -1,0 +1,371 @@
+(function() {
+    'use strict';
+
+    // NOTE: requirejs setup at bottom (this file is also being used by non-requirejs clients)
+
+    var uuid = function() {
+        var crypto = window.crypto || window.msCrypto;
+
+        if(crypto == null){
+            alert("Permalink failed to generate");
+        } else{
+            // RFC4122 version 4 compliant
+            // Source: http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript#answer-2117523
+            return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, function(c){
+                    return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+                }
+            )
+        }
+    };
+
+    var  getParameterByName = function(name,url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)", "i"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        var retVal = decodeURIComponent(results[2].replace(/\+/g, " "));
+        return retVal === 'null' ? null : retVal;
+    };
+
+    var isValidEmail = function(email) {
+        //This regex was found here: http://stackoverflow.com/a/46181
+        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    };
+
+    var isLatLonInput = function(input) {
+        //This regex was found here: http://stackoverflow.com/questions/3518504/regular-expression-for-matching-latitude-longitude-coordinates
+        var testCommaOrSpace = /^([-+]?\d{1,2}([.]\d+)?)[,\s]+([-+]?\d{1,3}([.]\d+)?)$/;
+        return testCommaOrSpace.test(input);
+    };
+
+    /**
+     * Create a permalink in praeferentia.
+     *
+     * @param json the json to store
+     * @param {Object} [options] The options object.
+     * @param {Function} [options.permalinkId = afwUtil.uuid()] the permalink id to store the json as
+     * @param {Function} [options.error = function() {}] error callback
+     * @param {number} [options.retryAttempts = 3] number of times to retry the request if the initial attempt fails
+     */
+    var createPermalink = function(json, options) {
+        var defaults = {
+            permalinkId: uuid()
+        };
+        options = $.extend({}, defaults, options);
+
+        saveJsonToPraeferentia('public', options.permalinkId, json, options);
+    };
+
+    /**
+     * Update the value of a publicpref for a given key
+     *
+     * @param applicationId id that's generally a uuid like
+     *        '185c0209-6f5e-6315-93ba-994755067807'
+     * @param key the key to update
+     * @param json the json to update the key value to
+     * @param {Object} [options] The options object.
+     * @param {Function} [options.success = function() {}] success callback
+     * @param {Function} [options.error = function() {}] error callback
+     * @param {number} [options.retryAttempts = 3] number of times to retry the request if the first attempt fails
+     */
+    var updatePublicPrefKeyValue = function(applicationId, key, json, options) {
+        options.key = key;
+        saveJsonToPraeferentia('publicpref', applicationId, json, options);
+    };
+
+    var saveJsonToPraeferentia = function(userId, applicationId, json, options) {
+        var defaults = {
+                success: function() {},
+                error: function() {},
+                retryAttempts: 3
+            },
+            data,
+            url = '/praeferentia/users/' + userId + '/' + applicationId + '.json';
+
+        options = $.extend({}, defaults, options);
+
+        data = {
+            _method : 'PUT',
+            valueAsJson: true
+        };
+
+        if (typeof options.key !== 'undefined') {
+            data.key = options.key;
+            data.value = JSON.stringify(json);
+        } else {
+            data.pref = JSON.stringify(json);
+        }
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'json',
+            data: data,
+            success: function(response) {
+                options.success(applicationId, response);
+            },
+            error: function(xhr) {
+                if (typeof(options.retryAttempts) !== 'number' || options.retryAttempts <= 0) {
+                    options.error(applicationId);
+                } else if (xhr.status === 429) {
+                    pseudoRedirectThrottled(xhr);
+                } else {
+                    setTimeout(function() {
+                        options.retryAttempts--;
+                        saveJsonToPraeferentia(userId, applicationId, json, options);
+                    }, 1000);
+                }
+            }
+        });
+    };
+
+    /**
+     * Load a permalink from praeferentia and return the json in a callback.
+     *
+     * @param permalinkId id ('application' in praeferentia-ese) that's generally a uuid like
+     *        '185c0209-6f5e-6315-93ba-994755067807'
+     * @param {Object} [options] The options object.
+     * @param {Function} [options.success = function() {}] success callback
+     * @param {Function} [options.error = function() {}] error callback
+     * @param {number} [options.retryAttempts = 3] number of times to retry the request if the initial attempt fails
+     * @param {string} [options.key] the specific permalink key to retrieve (rather than the full permalink)
+     */
+    var loadPermalink = function(permalinkId, options) {
+        retrievePraeferentiaJson('public', permalinkId, options);
+    };
+
+    /**
+     * Load a PublicPref from praeferentia and return the json in a callback.
+     *
+     * @param applicationId id ('application' in praeferentia-ese) that's generally a uuid like
+     *        '185c0209-6f5e-6315-93ba-994755067807'
+     * @param {Object} [options] The options object.
+     * @param {Function} [options.success = function() {}] success callback
+     * @param {Function} [options.error = function() {}] error callback
+     * @param {number} [options.retryAttempts = 3] number of times to retry the request if the initial attempt fails
+     * @param {string} [options.key] the specific permalink key to retrieve (rather than the full PublicPref)
+     */
+    var loadPublicPref = function(applicationId, options) {
+        retrievePraeferentiaJson('publicpref', applicationId, options);
+    };
+
+    var retrievePraeferentiaJson = function(userId, applicationId, options) {
+        var defaults = {
+                success: function() {},
+                error: function() {},
+                retryAttempts: 3
+            },
+            url = '/praeferentia/users/' + userId +  '/' + applicationId + '.json';
+
+        options = $.extend({}, defaults, options);
+        if (typeof options.key !== 'undefined') {
+            url += '?key=' + options.key;
+        }
+
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            success: options.success,
+            error: function(xhr) {
+                if (typeof options.retryAttempts !== 'number' || options.retryAttempts <= 0) {
+                    options.error(applicationId);
+                } else if (xhr.status === 429) {
+                    pseudoRedirectThrottled(xhr);
+                } else {
+                    setTimeout(function() {
+                        options.retryAttempts--;
+                        retrievePraeferentiaJson(userId, applicationId, options);
+                    }, 1000);
+                }
+            }
+        });
+    };
+
+    /**
+     * Parse a query string from a url, e.g., '?foo=1&bar=2'
+     *
+     * @param queryString if you don't want to use the current location's query string
+     * @returns object with key/values for the query string, e.g., <code>{foo: '1', bar: '2'}</code>
+     */
+    var parseQueryString = function(queryString) {
+        queryString = queryString || window.location.search;
+
+        var paramObj = {};
+
+        queryString = queryString.substr(1); // strip off '?'
+
+        $.each(queryString.split('&'), function(index, keyValStr) {
+            if (keyValStr.length > 0) {
+                var keyValArr = keyValStr.split('=');
+                var decodedKey = decodeURIComponent(keyValArr[0]);
+
+                paramObj[decodedKey] = decodeURIComponent(keyValArr[1]);
+            }
+        });
+
+        return paramObj;
+    };
+
+    var parseForecast = function (forecast) {
+        var forecastResult = 0,
+            result = forecast.match(/P(?:(\d+)?D)?T?(?:(\d+)?H)?(?:(\d+)?S)?/),
+            DAY_IN_SECONDS = 24 * 60 * 60,
+            HOUR_IN_SECONDS = 60 * 60,
+            SECOND_IN_MILLISECONDS = 1000;
+
+        if (result[1]) {
+            forecastResult += parseInt(result[1], 10) * DAY_IN_SECONDS;
+        }
+        if (result[2]) {
+            forecastResult += parseInt(result[2], 10) * HOUR_IN_SECONDS;
+        }
+        if (result[3]) {
+            forecastResult += parseInt(result[3], 10);
+        }
+
+        forecastResult *= SECOND_IN_MILLISECONDS; //convert to ms
+
+        return forecastResult;
+    };
+
+    var parseTime = function (dateString) {
+        var parts = dateString.match(/\d+/g);
+        var isoTime = Date.UTC(parts[0], parts[1] - 1, parts[2], parts[3], parts[4], parts[5]);
+        return new Date(isoTime);
+    };
+
+    /**
+     * Format a Date to appear similar to the WMS time e.g., "2014-01-12T12:00:00Z". This could use Date.toISOString() but
+     * that function does not exist in IE8.
+     * See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString
+     */
+    var formatValidTime = function (date) {
+        return date.getUTCFullYear() +
+            '-' + padDigit(date.getUTCMonth() + 1) +
+            '-' + padDigit(date.getUTCDate()) +
+            'T' + padDigit(date.getUTCHours()) +
+            ':' + padDigit(date.getUTCMinutes()) +
+            ':' + padDigit(date.getUTCSeconds()) +
+            'Z';
+    };
+
+    /**
+     * Format a date object to be like "15 JUL 0600Z"
+     */
+    function formatShortValidTime(date) {
+        var monthNames = [ 'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC' ];
+
+        return padDigit(date.getUTCDate()) +
+            ' ' + monthNames[date.getMonth()] +
+            ' ' + padDigit(date.getUTCHours()) +
+            padDigit(date.getUTCMinutes()) + 'Z';
+    }
+
+    function padDigit(number) {
+        if (number < 10) {
+            return '0' + number;
+        }
+        return number;
+    }
+
+    /**
+     * Given a model run and forecast hour, returns a Date object corresponding to the valid time.
+     *
+     * @param run The model run as a string, eg, 2014-07-09T12:00:00Z
+     * @param forecast The forecast hour as a string, eg, PT0S or P5DT12H
+     * @returns {Date}
+     */
+    var calculateValidTime = function (run, forecast) {
+        var forecastOffsetMillis = parseForecast(forecast),
+            runDate = parseTime(run);
+        return new Date(runDate.getTime() + forecastOffsetMillis);
+    };
+
+    /**
+     * Safely decode HTML/XML by placing it in a textarea which will decode the special characters without running
+     * any malicious code.
+     *
+     * @param encodedString
+     * @returns {Decoded HTML/XML}
+     */
+    var decodeHTML = function(encodedString) {
+        var textArea = document.createElement('textarea');
+        textArea.innerHTML = encodedString;
+        return textArea.value;
+    };
+
+    /**
+     * Replaces current page with "throttled" error page response. Since the response is returned dynamically from
+     * HAProxy, we can't do a real 302-type redirect, because there's no endpoint to load. Instead, we use the response
+     * body, which should be properly-formed HTML, to rewrite the current document.
+     *
+     * @param xhr  error response
+     */
+    var pseudoRedirectThrottled = function(xhr) {
+        document.open();
+        document.write(xhr.responseText);
+        document.close();
+    };
+
+    /**
+     * Similar to wxfiig_client/js/throttlingErrorHandler.js
+     *
+     * @param data  response from haproxy
+     * @param placeholderElement  element to stuff throttled response in
+     * @returns {boolean}  whether this response was throttled
+     */
+    var handleJsonThrottled = function(data, placeholderElement) {
+        var isDataOk = true;
+        if (data["is_throttling_error"]) {
+            isDataOk = false;
+            if (placeholderElement) {
+                var content = data["response"];
+                var contentType = data["content-type"];
+                if (contentType.startsWith("image/")) {
+                    placeholderElement.innerHTML = "<img alt='Too Many Requests' src='data:" + contentType + ";base64," + content + "' />";
+                } else {  // assume text/html
+                    placeholderElement.innerHTML = content;
+                }
+            } else {  // fall back to alerts if no placeholder is found
+                alert("Too many requests. Please wait a short period of time between requests.");
+            }
+        }
+
+        if (isDataOk && placeholderElement != null) {
+            placeholderElement.innerHTML = '';  // clear out error if it existed
+        }
+        return isDataOk;
+    };
+
+    // public API
+    var afwUtil = {
+        uuid: uuid,
+        isValidEmail: isValidEmail,
+        createPermalink: createPermalink,
+        loadPermalink: loadPermalink,
+        loadPublicPref: loadPublicPref,
+        updatePublicPrefKeyValue: updatePublicPrefKeyValue,
+        parseQueryString: parseQueryString,
+        calculateValidTime: calculateValidTime,
+        formatValidTime: formatValidTime,
+        formatShortValidTime: formatShortValidTime,
+        parseForecast: parseForecast,
+        isLatLonInput: isLatLonInput,
+        getParameterByName: getParameterByName,
+        decodeHTML: decodeHTML,
+        pseudoRedirectThrottled: pseudoRedirectThrottled,
+        handleJsonThrottled: handleJsonThrottled
+    };
+
+
+    if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
+        define(['jquery'], function() {
+            return afwUtil;
+        });
+    } else {
+        window.afwUtil = afwUtil;
+    }
+})();
