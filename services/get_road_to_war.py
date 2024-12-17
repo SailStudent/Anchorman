@@ -9,7 +9,7 @@ import requests_pkcs12
 logging.basicConfig(filename='error.log', level=logging.ERROR)
 
 # Retrieve the password from the environment variable
-LOADOUT_PASSWORD = os.environ.get("LOADOUT_PASSWORD", "bdppassword1")
+LOADOUT_PASSWORD = os.environ.get("LOADOUT_PASSWORD", "xxxxxxxxxxxx")
 
 def create_road_to_war(location_of_interest):
     url = 'https://omni.army.mil/camogptapi/model/v1/chat/completions'
