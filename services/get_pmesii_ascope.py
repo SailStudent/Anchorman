@@ -13,7 +13,7 @@ import requests_pkcs12
 logging.basicConfig(filename='error.log', level=logging.ERROR)
 
 # Retrieve the password from the environment variable
-LOADOUT_PASSWORD = os.environ.get("LOADOUT_PASSWORD", "bdppassword1")
+LOADOUT_PASSWORD = os.environ.get("LOADOUT_PASSWORD", "xxxxxxxxxxx")
 
 def create_pmesii_ascope_crosswalk(location_of_interest_1):
     url = 'https://omni.army.mil/camogptapi/model/v1/chat/completions'
